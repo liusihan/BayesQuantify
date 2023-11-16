@@ -1,2 +1,11 @@
 ^BayesQuantify\.Rproj$
 ^\.Rproj\.user$
+^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^README\.Rmd$
+^doc$
+^Meta$
+^\.github$
+^codecov\.yml$
