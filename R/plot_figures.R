@@ -22,10 +22,9 @@
 #' data("VCI_data")
 #' VCI_data <- add_info(VCI_data, "Assertion")
 #' VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
-#' VCI_data$Consequence <- "NA"
-#' multi_plot(VCI_data, "Assertion", "Consequence", "HGNC Gene Symbol")
+#' multi_plot(VCI_data, "Assertion", "HGNC Gene Symbol")
 #'
-multi_plot <- function(data, classification_col, consequence, gene) {
+multi_plot <- function(data, classification_col, gene, consequence=NULL) {
   classification_num <- which(colnames(data) == classification_col)
   gene_num <- which(colnames(data) == gene)
   consequence_num <- which(colnames(data) == consequence)
@@ -70,56 +69,59 @@ multi_plot <- function(data, classification_col, consequence, gene) {
     labs(fill = "", x = "", y = "Number of P/LP variants") +
     scale_fill_manual(values = c("#780000", "#c1121f")) +
     guides(fill = FALSE)
-  cover <- data.frame(data %>%
-    group_by(get(colnames(data)[classification_num]), Classification_3, get(colnames(data)[consequence_num])) %>%
-    summarize(n = n()))
-  colnames(cover)[1] <- "Classification"
-  colnames(cover)[3] <- "Consequence"
-  cover <- arrange(cover, desc(n), Consequence)
-  count <- data.frame(data %>%
-    group_by(Classification_3) %>%
-    summarize(n = n()))
-  cover <- full_join(cover, count, by = c("Classification_3"))
-  cover <- cover %>% mutate(percent = n.x / n.y)
-  cover2 <- data.frame(data %>%
-    group_by(Classification_3, get(colnames(data)[consequence_num])) %>%
-    summarize(n = n()))
-  colnames(cover2)[2] <- "Consequence"
-  cover2 <- arrange(cover2, desc(n), Consequence)
-  count <- data.frame(data %>%
-    group_by(Classification_3) %>%
-    summarize(n = n()))
-  cover2 <- full_join(cover2, count, by = c("Classification_3"))
-  cover2 <- cover2 %>% mutate(percent = n.x / n.y)
-  cover$Consequence <- factor(cover$Consequence, levels = as.character(unique(c(cover2[cover2$Classification_3 == "P/LP", ]$Consequence, cover2[cover2$Classification_3 == "VUS", ]$Consequence, cover2[cover2$Classification_3 == "B/LB", ]$Consequence))))
-  cover$Classification_3 <- factor(cover$Classification_3, levels = c("P/LP", "VUS", "B/LB"))
-  if ("Pathogenic" %in% names(table(cover$Classification))) {
-    cover$Classification <- factor(cover$Classification, levels = c("Pathogenic", "Likely Pathogenic", "Uncertain Significance", "Likely Benign", "Benign"))
-  } else {
-    cover$Classification <- factor(cover$Classification, levels = c("P", "LP", "VUS", "LB", "B"))
+  if ((!(is.null(consequence)))) {
+    cover <- data.frame(data %>%
+      group_by(get(colnames(data)[classification_num]), Classification_3, get(colnames(data)[consequence_num])) %>%
+      summarize(n = n()))
+    colnames(cover)[1] <- "Classification"
+    colnames(cover)[3] <- "Consequence"
+    cover <- arrange(cover, desc(n), Consequence)
+    count <- data.frame(data %>%
+      group_by(Classification_3) %>%
+      summarize(n = n()))
+    cover <- full_join(cover, count, by = c("Classification_3"))
+    cover <- cover %>% mutate(percent = n.x / n.y)
+    cover2 <- data.frame(data %>%
+      group_by(Classification_3, get(colnames(data)[consequence_num])) %>%
+      summarize(n = n()))
+    colnames(cover2)[2] <- "Consequence"
+    cover2 <- arrange(cover2, desc(n), Consequence)
+    count <- data.frame(data %>%
+      group_by(Classification_3) %>%
+      summarize(n = n()))
+    cover2 <- full_join(cover2, count, by = c("Classification_3"))
+    cover2 <- cover2 %>% mutate(percent = n.x / n.y)
+    cover$Consequence <- factor(cover$Consequence, levels = as.character(unique(c(cover2[cover2$Classification_3 == "P/LP", ]$Consequence, cover2[cover2$Classification_3 == "VUS", ]$Consequence, cover2[cover2$Classification_3 == "B/LB", ]$Consequence))))
+    cover$Classification_3 <- factor(cover$Classification_3, levels = c("P/LP", "VUS", "B/LB"))
+    if ("Pathogenic" %in% names(table(cover$Classification))) {
+      cover$Classification <- factor(cover$Classification, levels = c("Pathogenic", "Likely Pathogenic", "Uncertain Significance", "Likely Benign", "Benign"))
+    } else {
+      cover$Classification <- factor(cover$Classification, levels = c("P", "LP", "VUS", "LB", "B"))
+    }
+    cover3 <- data.frame(data %>%
+      group_by(Classification_3, get(colnames(data)[consequence_num])) %>%
+      summarize(n = n()))
+    colnames(cover3)[2] <- "Consequence"
+    cover3 <- arrange(cover3, desc(n), Consequence)
+    cover3 <- full_join(cover3, count, by = c("Classification_3"))
+    cover3 <- cover3 %>% mutate(percent = n.x / n.y)
+    cover3$Classification_3 <- factor(cover3$Classification_3, levels = c("P/LP", "VUS", "B/LB"))
+    cover3$Consequence <- factor(cover3$Consequence, levels = as.character(unique(c(cover3[cover3$Classification_3 == "P/LP", ]$Consequence, cover3[cover3$Classification_3 == "VUS", ]$Consequence, cover3[cover3$Classification_3 == "B/LB", ]$Consequence))))
+    cover4 <- full_join(cover, cover3, by = c("Classification_3", "Consequence"))
+    cover4$number <- ifelse(duplicated(paste(cover4$Classification_3, cover4$Consequence, sep = "_")), "", cover4$n.x.y)
+    f4 <- ggplot(cover4, aes(x = Consequence, y = percent.x, fill = Classification)) +
+      geom_bar(stat = "identity") +
+      theme_classic() +
+      scale_fill_manual(values = c("#780000", "#c1121f", "#bfdbf7", "#cad2c5", "#84a98c")) +
+      guides(fill = guide_legend(title = NULL)) +
+      theme(axis.title = element_blank(), legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10)) +
+      facet_grid(Classification_3 ~ .) +
+      ylim(0, 1) +
+      guides(fill = FALSE) +
+      geom_text(aes(x = Consequence, y = percent.y, label = number), size = 3, vjust = 0, nudge_y = 0.01)
+    fall <- (f1 + f2) / (f3 + f4) + plot_annotation(tag_levels = "A")
   }
-  cover3 <- data.frame(data %>%
-    group_by(Classification_3, get(colnames(data)[consequence_num])) %>%
-    summarize(n = n()))
-  colnames(cover3)[2] <- "Consequence"
-  cover3 <- arrange(cover3, desc(n), Consequence)
-  cover3 <- full_join(cover3, count, by = c("Classification_3"))
-  cover3 <- cover3 %>% mutate(percent = n.x / n.y)
-  cover3$Classification_3 <- factor(cover3$Classification_3, levels = c("P/LP", "VUS", "B/LB"))
-  cover3$Consequence <- factor(cover3$Consequence, levels = as.character(unique(c(cover3[cover3$Classification_3 == "P/LP", ]$Consequence, cover3[cover3$Classification_3 == "VUS", ]$Consequence, cover3[cover3$Classification_3 == "B/LB", ]$Consequence))))
-  cover4 <- full_join(cover, cover3, by = c("Classification_3", "Consequence"))
-  cover4$number <- ifelse(duplicated(paste(cover4$Classification_3, cover4$Consequence, sep = "_")), "", cover4$n.x.y)
-  f4 <- ggplot(cover4, aes(x = Consequence, y = percent.x, fill = Classification)) +
-    geom_bar(stat = "identity") +
-    theme_classic() +
-    scale_fill_manual(values = c("#780000", "#c1121f", "#bfdbf7", "#cad2c5", "#84a98c")) +
-    guides(fill = guide_legend(title = NULL)) +
-    theme(axis.title = element_blank(), legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10)) +
-    facet_grid(Classification_3 ~ .) +
-    ylim(0, 1) +
-    guides(fill = FALSE) +
-    geom_text(aes(x = Consequence, y = percent.y, label = number), size = 3, vjust = 0, nudge_y = 0.01)
-  fall <- (f1 + f2) / (f3 + f4) + plot_annotation(tag_levels = "A")
+  else{fall <- (f1 + f2) / f3 + plot_annotation(tag_levels = "A")}
   return(fall)
 }
 

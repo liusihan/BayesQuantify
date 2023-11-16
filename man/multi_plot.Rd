@@ -4,16 +4,16 @@
 \alias{multi_plot}
 \title{Visualize the distribution of variants}
 \usage{
-multi_plot(data, classification_col, consequence, gene)
+multi_plot(data, classification_col, gene, consequence = NULL)
 }
 \arguments{
 \item{data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
 
 \item{classification_col}{The column name for variant classification (str)}
 
-\item{consequence}{The column name for the annotation results of variant consequences(str)}
-
 \item{gene}{The column name for the gene where the variant is located(str)}
+
+\item{consequence}{The column name for the annotation results of variant consequences(str)}
 }
 \value{
 Figures
@@ -25,7 +25,6 @@ Visualize the distribution of variants
 data("VCI_data")
 VCI_data <- add_info(VCI_data, "Assertion")
 VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
-VCI_data$Consequence <- "NA"
-multi_plot(VCI_data, "Assertion", "Consequence", "HGNC Gene Symbol")
+multi_plot(VCI_data, "Assertion", "HGNC Gene Symbol")
 
 }
