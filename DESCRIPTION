@@ -1,5 +1,5 @@
 Package: BayesQuantify
-Title: Quantitative thresholds for each evidence strength
+Title: An R package for quantifying the strength of evidence for ACMG/AMP criteria using a Bayesian framework
 Version: 1.0.0
 Authors@R: 
     person("Sihan", "Liu", , "liusihan@wchscu.cn", role = c("aut", "cre"))
