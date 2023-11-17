@@ -25,8 +25,13 @@ The ACMG/AMP guidelines have undergone continuous review and refinement for diff
 The [BayesQuantify] R Package provide a comprehensive functions to define the thresholds for each evidence strength level
 
 ## Installation
+You can install the latest version of BayesQuantify like so:
 
-You can install the development version of BayesQuantify like so:
+``` r
+install.packages("BayesQuantify")
+```
+
+Additionnaly, you can install the development version of BayesQuantify like so:
 
 ``` r
 devtools::install_github("liusihan/BayesQuantify")
@@ -34,11 +39,18 @@ devtools::install_github("liusihan/BayesQuantify")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to calculate positive likelihood ratio and local positive likelihood ratio with [BayesQuantify]:
 
 ```{r example}
 library(BayesQuantify)
 data("VCI_data")
-data("ClinVar2020_AJHG_Pejaver_data")
+VCI_data <- add_info(VCI_data, "Assertion")
+VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
+truth_set <- VCI_data[VCI_data$VUS_class != "Hot" & VCI_data$VUS_class != "Warm" & VCI_data$VUS_class != "Tepid" & VCI_data$VUS_class != "NA", ]
+truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM2")
+truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP1")
+truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM4")
+truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM5")
+LR(truth_set, 28, 31)
 ```
 
