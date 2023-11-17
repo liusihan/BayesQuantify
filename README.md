@@ -20,7 +20,7 @@ and PP3/BP4. However, there are challenges for clinicians in utilizing
 the Bayesian Classification Framework, as tools and software for
 convincingly calculating the positive likelihood ratio are lacking.
 
-The `BayesQuantify` (#bayesquantify) R Package provide a comprehensive
+The `BayesQuantify` R Package provide a comprehensive
 functions to define the thresholds for each evidence strength level
 
 ## Installation
