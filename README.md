@@ -20,18 +20,18 @@ and PP3/BP4. However, there are challenges for clinicians in utilizing
 the Bayesian Classification Framework, as tools and software for
 convincingly calculating the positive likelihood ratio are lacking.
 
-The [BayesQuantify](#bayesquantify) R Package provide a comprehensive
+The `BayesQuantify` (#bayesquantify) R Package provide a comprehensive
 functions to define the thresholds for each evidence strength level
 
 ## Installation
 
-You can install the latest version of BayesQuantify like so:
+You can install `BayesQuantify` from CRAN:
 
 ``` r
 install.packages("BayesQuantify")
 ```
 
-Additionnaly, you can install the development version of BayesQuantify like so:
+Or you can install the development version of `BayesQuantify` from GitHub:
 
 ``` r
 devtools::install_github("liusihan/BayesQuantify")
@@ -39,7 +39,7 @@ devtools::install_github("liusihan/BayesQuantify")
 
 ## Example
 
-This is a basic example which shows you how to calculate positive likelihood ratio and local positive likelihood ratio with [BayesQuantify]:
+This is a basic example which shows you how to calculate the positive likelihood ratio using `BayesQuantify`:
 
 ``` r
 library(BayesQuantify)

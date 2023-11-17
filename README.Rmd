@@ -22,16 +22,16 @@ knitr::opts_chunk$set(
 
 The ACMG/AMP guidelines have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the ClinGen Sequence Variant Interpretation Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4. However, there are challenges for clinicians in utilizing the Bayesian Classification Framework, as tools and software for convincingly calculating the positive likelihood ratio are lacking.
 
-The [BayesQuantify] R Package provide a comprehensive functions to define the thresholds for each evidence strength level
+The `BayesQuantify` R Package provide a comprehensive functions to define the thresholds for each evidence strength level
 
 ## Installation
-You can install the latest version of BayesQuantify like so:
+You can install `BayesQuantify` from CRAN:
 
 ``` r
 install.packages("BayesQuantify")
 ```
 
-Additionnaly, you can install the development version of BayesQuantify like so:
+Or you can install the development version of `BayesQuantify` from GitHub:
 
 ``` r
 devtools::install_github("liusihan/BayesQuantify")
@@ -39,9 +39,9 @@ devtools::install_github("liusihan/BayesQuantify")
 
 ## Example
 
-This is a basic example which shows you how to calculate positive likelihood ratio and local positive likelihood ratio with [BayesQuantify]:
+This is a basic example which shows you how to calculate the positive likelihood ratio using `BayesQuantify`:
 
-```{r example}
+``` r
 library(BayesQuantify)
 data("VCI_data")
 VCI_data <- add_info(VCI_data, "Assertion")
