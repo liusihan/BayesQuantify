@@ -1,6 +1,6 @@
 Package: BayesQuantify
 Title: Quantitative thresholds for each evidence strength
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: 
     person("Sihan", "Liu", , "liusihan@wchscu.cn", role = c("aut", "cre"))
 Description: The ACMG/AMP guidelines have undergone continuous review and refinement 
@@ -11,6 +11,8 @@ Description: The ACMG/AMP guidelines have undergone continuous review and refine
    for applying PM5 and PP3/BP4. However, there are challenges for clinicians in utilising the 
    Bayesian Classification Framework, as tools and software for convincingly calculating 
    the positive likelihood ratio are lacking.
+   The BayesQuantify R Package provide a comprehensive functions to define the thresholds 
+   for each evidence strength level.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
