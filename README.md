@@ -41,7 +41,7 @@ devtools::install_github("liusihan/BayesQuantify")
 
 This is a basic example which shows you how to calculate positive likelihood ratio and local positive likelihood ratio with [BayesQuantify]:
 
-```{r example}
+``` r
 library(BayesQuantify)
 data("VCI_data")
 VCI_data <- add_info(VCI_data, "Assertion")
