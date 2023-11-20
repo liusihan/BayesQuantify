@@ -13,9 +13,11 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("ClinVar2020_AJHG_Pejaver_data")
-#' ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 100, 0.1)
+#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+#' local_lr(data, "PrimateAI_score", 0.1, 100, 0.1)
+#' }
 #'
 local_lr <- function(input_data, feature, alpha, minpoints, increment) {
   input_data <- input_data[!is.na(input_data[[feature]]), ]
@@ -72,15 +74,16 @@ local_lr <- function(input_data, feature, alpha, minpoints, increment) {
 #' @param output_dir Output directory
 #'
 #'
-#' @import stats
-#' @import utils
+#' @importFrom utils write.table
 #' @return The posterior probability values for each bootstrap iteration
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("ClinVar2020_AJHG_Pejaver_data")
-#' ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+#' }
 #'
 local_bootstrapped_lr <- function(input_data, feature, alpha, bootstrap, minpoints, increment, output_dir) {
   if (!dir.exists(output_dir)) {
@@ -107,17 +110,18 @@ local_bootstrapped_lr <- function(input_data, feature, alpha, bootstrap, minpoin
 #' @param dir The directory containing the results of bootstrapping
 #'
 #' @return A list of optimized thresholds
-#' @import stats
-#' @import utils
+#' @importFrom utils read.table
 #'
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("ClinVar2020_AJHG_Pejaver_data")
-#' ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
 #' postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
-#' get_lr_threshold(postp_list, 0.05, 10, "test_dir")
+#' get_lr_threshold(postp_list, 0.05, 10, "test_dir"
+#' }
 #'
 get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
   thresh <- as.data.frame(matrix(nrow = bootstrap, ncol = 4))
@@ -158,8 +162,8 @@ get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
 #'
 #' @param bootstrap The number of bootstrapping iterations
 #' @param dir The directory containing the results of bootstrapping
-#' @import stats
-#' @import utils
+#' @importFrom stats t.test
+#' @importFrom utils read.table
 #' @importFrom dplyr left_join
 #'
 #'
@@ -167,10 +171,12 @@ get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("ClinVar2020_AJHG_Pejaver_data")
-#' ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
-#' lr_CI_result <- lr_CI(30, "test_dir")
+#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
+#' lr_CI_result <- lr_CI(30, "test_dir"
+#' }
 #'
 lr_CI <- function(bootstrap, dir) {
   if (!dir.exists(dir)) {

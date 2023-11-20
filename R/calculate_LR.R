@@ -47,14 +47,16 @@ discrete_cutoff <- function(data, feature, range = NULL, criteria = NULL) {
 #' @param end The concluding column index of evaluated cutoffs
 #'
 #' @import bootLR
+#' @importFrom dplyr filter
 #' @return A DataFrame comprising the evaluation metrics for each assessed cutoff
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("VCI_data")
-#' VCI_data <- add_info(VCI_data, "Assertion")
-#' VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
-#' truth_set <- VCI_data[VCI_data$VUS_class != "Hot" & VCI_data$VUS_class != "Warm" & VCI_data$VUS_class != "Tepid" & VCI_data$VUS_class != "NA", ]
+#' data <- add_info(VCI_data, "Assertion")
+#' data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
+#' truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM2")
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP3")
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP1")
@@ -65,6 +67,7 @@ discrete_cutoff <- function(data, feature, range = NULL, criteria = NULL) {
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM4")
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM5")
 #' LR(truth_set, 28, 36)
+#' }
 #'
 LR <- function(data, start, end) {
   output <- as.data.frame(matrix(nrow = 0, ncol = 21))

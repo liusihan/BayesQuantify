@@ -18,7 +18,9 @@ A new DataFrame that incorporates the input data and the results of variant clas
 Classifying variants into five distinct categories according to the 2015 ACMG/AMP guidelines
 }
 \examples{
+\dontrun{
 data("VCI_data")
 ACMG_Classification(VCI_data, "Applied Evidence Codes (Met)")
+}
 
 }

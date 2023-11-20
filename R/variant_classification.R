@@ -9,8 +9,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("VCI_data")
 #' ACMG_Classification(VCI_data, "Applied Evidence Codes (Met)")
+#' }
 #'
 ACMG_Classification <- function(data, evidence_col) {
   evidence_num <- which(colnames(data) == evidence_col)
@@ -99,8 +101,10 @@ ACMG_Classification <- function(data, evidence_col) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("VCI_data")
 #' BCF(VCI_data, "Applied Evidence Codes (Met)", 0.1, 350)
+#' }
 #'
 BCF <- function(data, evidence_col, prior_p, op_vs) {
   evidence_num <- which(colnames(data) == evidence_col)
@@ -156,8 +160,10 @@ BCF <- function(data, evidence_col, prior_p, op_vs) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data("VCI_data")
 #' Point_Classification(VCI_data, "Applied Evidence Codes (Met)")
+#' }
 #'
 Point_Classification <- function(data, evidence_col) {
   evidence_num <- which(colnames(data) == evidence_col)

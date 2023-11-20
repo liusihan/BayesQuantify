@@ -2,8 +2,8 @@
 #'
 #' @param data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param classification_col The column name for variant classification (str)
-#' @param consequence The column name for the annotation results of variant consequences(str)
-#' @param gene The column name for the gene where the variant is located(str)
+#' @param consequence_col The column name for the annotation results of variant consequences(str)
+#' @param gene_col The column name for the gene where the variant is located(str)
 #'
 #'
 #' @import stringr
@@ -13,6 +13,7 @@
 #' @import patchwork
 #' @import ggplot2
 #' @importFrom dplyr `%>%` mutate group_by summarize full_join n arrange desc
+#' @importFrom utils globalVariables
 #'
 #'
 #' @return Figures
@@ -24,10 +25,10 @@
 #' VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
 #' multi_plot(VCI_data, "Assertion", "HGNC Gene Symbol")
 #'
-multi_plot <- function(data, classification_col, gene, consequence=NULL) {
+multi_plot <- function(data, classification_col, gene_col, consequence_col=NULL) {
   classification_num <- which(colnames(data) == classification_col)
-  gene_num <- which(colnames(data) == gene)
-  consequence_num <- which(colnames(data) == consequence)
+  gene_num <- which(colnames(data) == gene_col)
+  consequence_num <- which(colnames(data) == consequence_col)
   if ("Pathogenic" %in% names(table(data[, classification_num]))) {
     data[, classification_num] <- factor(data[, classification_num], levels = c("Pathogenic", "Likely Pathogenic", "Uncertain Significance", "Likely Benign", "Benign"))
   } else {
@@ -69,7 +70,7 @@ multi_plot <- function(data, classification_col, gene, consequence=NULL) {
     labs(fill = "", x = "", y = "Number of P/LP variants") +
     scale_fill_manual(values = c("#780000", "#c1121f")) +
     guides(fill = FALSE)
-  if ((!(is.null(consequence)))) {
+  if ((!(is.null(consequence_col)))) {
     cover <- data.frame(data %>%
       group_by(get(colnames(data)[classification_num]), Classification_3, get(colnames(data)[consequence_num])) %>%
       summarize(n = n()))
@@ -135,6 +136,7 @@ multi_plot <- function(data, classification_col, gene, consequence=NULL) {
 #' @import grid
 #' @import scales
 #' @import circlize
+#' @importFrom stats quantile
 #'
 #' @export
 #'
@@ -186,13 +188,14 @@ heatmap_LR <- function(data, op_list) {
 #' @param data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param postp_list A list of posterior probability corresponding to each level of evidence strength
 #' @import ggplot2
+#' @importFrom utils globalVariables
 #' @return Figures
 #' @export
 #'
 #' @examples
 #' data("lr_CI_result")
-#' # ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' # local_bootstrapped_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
+#' # data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+#' # local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
 #' postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
 #' # lr_CI_result <- lr_CI(30, "test_dir")
 #' plot_lr(lr_CI_result, postp_list)

@@ -4,16 +4,16 @@
 \alias{multi_plot}
 \title{Visualize the distribution of variants}
 \usage{
-multi_plot(data, classification_col, gene, consequence = NULL)
+multi_plot(data, classification_col, gene_col, consequence_col = NULL)
 }
 \arguments{
 \item{data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
 
 \item{classification_col}{The column name for variant classification (str)}
 
-\item{gene}{The column name for the gene where the variant is located(str)}
+\item{gene_col}{The column name for the gene where the variant is located(str)}
 
-\item{consequence}{The column name for the annotation results of variant consequences(str)}
+\item{consequence_col}{The column name for the annotation results of variant consequences(str)}
 }
 \value{
 Figures

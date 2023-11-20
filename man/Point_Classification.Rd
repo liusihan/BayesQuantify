@@ -18,7 +18,9 @@ A new DataFrame that incorporates the input data and the results of variant clas
 Classifying variants into five distinct categories according to the scaled point system.
 }
 \examples{
+\dontrun{
 data("VCI_data")
 Point_Classification(VCI_data, "Applied Evidence Codes (Met)")
+}
 
 }

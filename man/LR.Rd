@@ -32,10 +32,11 @@ Subsequently, LR+, overall accuracy, true positive rate (sensitivity), true nega
 Estimates of 95\% CI of LR+ were generated using bootstrapping in the R package, bootLR.
 }
 \examples{
+\dontrun{
 data("VCI_data")
-VCI_data <- add_info(VCI_data, "Assertion")
-VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
-truth_set <- VCI_data[VCI_data$VUS_class != "Hot" & VCI_data$VUS_class != "Warm" & VCI_data$VUS_class != "Tepid" & VCI_data$VUS_class != "NA", ]
+data <- add_info(VCI_data, "Assertion")
+data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
+truth_set <- filter(data,VUS_class \%in\% c("IceCold","Cold","Cool",""))
 truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM2")
 truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP3")
 truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP1")
@@ -46,5 +47,6 @@ truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria
 truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM4")
 truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM5")
 LR(truth_set, 28, 36)
+}
 
 }

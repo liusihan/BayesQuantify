@@ -36,8 +36,10 @@ The posterior probability values for each bootstrap iteration
 The one-sided 95\% confidence bound for each estimated lr+  was determined through bootstrapping iterations, enabling the assessment of evidence strength.
 }
 \examples{
+\dontrun{
 data("ClinVar2020_AJHG_Pejaver_data")
-ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_bootstrapped_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+}
 
 }

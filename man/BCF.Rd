@@ -22,7 +22,9 @@ A new DataFrame that incorporates the input data and the results of variant clas
 Classifying variants into five distinct categories according to the Bayesian classification framework
 }
 \examples{
+\dontrun{
 data("VCI_data")
 BCF(VCI_data, "Applied Evidence Codes (Met)", 0.1, 350)
+}
 
 }

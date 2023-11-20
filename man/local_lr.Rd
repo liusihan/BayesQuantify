@@ -28,8 +28,10 @@ First, all unique tested cutoff values were sorted, then each value was position
 The posterior probability was calculated for each tested cutoff value within the interval, considering a minimum of selected pathogenic and non-pathogenic variants.
 }
 \examples{
+\dontrun{
 data("ClinVar2020_AJHG_Pejaver_data")
-ClinVar2020_AJHG_Pejaver_data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_lr(ClinVar2020_AJHG_Pejaver_data, "PrimateAI_score", 0.1, 100, 0.1)
+data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
+local_lr(data, "PrimateAI_score", 0.1, 100, 0.1)
+}
 
 }

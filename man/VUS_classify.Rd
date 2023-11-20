@@ -2,18 +2,15 @@
 % Please edit documentation in R/classify_vus.R
 \name{VUS_classify}
 \alias{VUS_classify}
-\title{Variants of uncertain significance (VUS) were categorized into six levels (hot, warm, tepid, cool, cold, and ice cold),
-according to the Association for Clinical Genomic Science (ACGS) Best Practice Guidelines
-\enumerate{
-\item hot: 1 very strong or 1 strong + 1 supporting or 2 moderate + 1 supporting or 1 moderate + 3 supporting evidence;
-\item warm: 1 strong or 2 moderate or 1 moderate + 2 supporting or 4 supporting evidence;
-\item tepid: 1 moderate + 1 supporting or 3 supporting evidence;
-\item cool: 1 moderate or 2 supporting evidence;
-\item cold: 1 supporting evidence;
-\item ice cold: no supporting evidence (https://www.acgs.uk.com/quality/best-practice-guidelines/#VariantGuidelines).
+\title{Variants of uncertain significance (VUS) were categorized into six levels (hot, warm, tepid, cool, cold, and ice cold), according to the Association for Clinical Genomic Science (ACGS) Best Practice Guidelines.
+hot: 1 very strong or 1 strong + 1 supporting or 2 moderate + 1 supporting or 1 moderate + 3 supporting evidence;
+warm: 1 strong or 2 moderate or 1 moderate + 2 supporting or 4 supporting evidence;
+tepid: 1 moderate + 1 supporting or 3 supporting evidence;
+cool: 1 moderate or 2 supporting evidence;
+cold: 1 supporting evidence;
+ice cold: no supporting evidence (https://www.acgs.uk.com/quality/best-practice-guidelines/#VariantGuidelines).
 Variants classified as cool, cold, or ice cold were considered as benign-leaning VUS, unlikely to be disease-causing.
-Variants classified as hot, warm, or tepid were considered to be pathogenic-leaning VUS.
-}}
+Variants classified as hot, warm, or tepid were considered to be pathogenic-leaning VUS.}
 \usage{
 VUS_classify(data, classification_col, evidence_col)
 }
@@ -28,18 +25,15 @@ VUS_classify(data, classification_col, evidence_col)
 A new DataFrame that includes the input data and VUS classification
 }
 \description{
-Variants of uncertain significance (VUS) were categorized into six levels (hot, warm, tepid, cool, cold, and ice cold),
-according to the Association for Clinical Genomic Science (ACGS) Best Practice Guidelines
-\enumerate{
-\item hot: 1 very strong or 1 strong + 1 supporting or 2 moderate + 1 supporting or 1 moderate + 3 supporting evidence;
-\item warm: 1 strong or 2 moderate or 1 moderate + 2 supporting or 4 supporting evidence;
-\item tepid: 1 moderate + 1 supporting or 3 supporting evidence;
-\item cool: 1 moderate or 2 supporting evidence;
-\item cold: 1 supporting evidence;
-\item ice cold: no supporting evidence (https://www.acgs.uk.com/quality/best-practice-guidelines/#VariantGuidelines).
+Variants of uncertain significance (VUS) were categorized into six levels (hot, warm, tepid, cool, cold, and ice cold), according to the Association for Clinical Genomic Science (ACGS) Best Practice Guidelines.
+hot: 1 very strong or 1 strong + 1 supporting or 2 moderate + 1 supporting or 1 moderate + 3 supporting evidence;
+warm: 1 strong or 2 moderate or 1 moderate + 2 supporting or 4 supporting evidence;
+tepid: 1 moderate + 1 supporting or 3 supporting evidence;
+cool: 1 moderate or 2 supporting evidence;
+cold: 1 supporting evidence;
+ice cold: no supporting evidence (https://www.acgs.uk.com/quality/best-practice-guidelines/#VariantGuidelines).
 Variants classified as cool, cold, or ice cold were considered as benign-leaning VUS, unlikely to be disease-causing.
 Variants classified as hot, warm, or tepid were considered to be pathogenic-leaning VUS.
-}
 }
 \examples{
 data("VCI_data")
