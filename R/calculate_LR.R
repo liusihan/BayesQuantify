@@ -56,6 +56,7 @@ discrete_cutoff <- function(data, feature, range = NULL, criteria = NULL) {
 #' data("VCI_data")
 #' data <- add_info(VCI_data, "Assertion")
 #' data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
+#' library(dplyr)
 #' truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM2")
 #' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP3")
