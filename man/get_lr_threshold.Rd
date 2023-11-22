@@ -27,7 +27,7 @@ data("ClinVar2020_AJHG_Pejaver_data")
 data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
 local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
 postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
-get_lr_threshold(postp_list, 0.05, 10, "test_dir"
+get_lr_threshold(postp_list, 0.05, 10, "test_dir")
 }
 
 }
