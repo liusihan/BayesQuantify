@@ -152,7 +152,7 @@ auto_select_postp <- function(prior_probability) {
     Combined_Odds_Path <- (op_s^-2)
     output[17, 1] <- Combined_Odds_Path
     output[17, 2] <- (Combined_Odds_Path * prior_probability) / ((Combined_Odds_Path - 1) * prior_probability + 1)
-    if (output[6, 2] >= 0.9 && output[14, 2] > 0.99 && output[16, 2] < 0.05 && output[17, 2] < 0.001) {
+    if (output[6, 2] > 0.9 && output[14, 2] > 0.99 && output[16, 2] < 0.1 && output[17, 2] < 0.001) {
       print(output)
       print(c(op_vs, op_s, op_m, op_p, postp_vs, postp_s, postp_m, postp_p))
       select_op <- 1
@@ -160,7 +160,7 @@ auto_select_postp <- function(prior_probability) {
     } else {
       n <- 0
       for (i in 1:6) {
-        if (output[i, 2] >= 0.9 && output[i, 2] <= 0.99) {
+        if (output[i, 2] > 0.9 && output[i, 2] <= 0.99) {
           n <- n + 1
         }
       }
@@ -170,7 +170,7 @@ auto_select_postp <- function(prior_probability) {
         }
       }
       for (i in 15:16) {
-        if (output[i, 2] >= 0.001 && output[i, 2] < 0.05) {
+        if (output[i, 2] >= 0.001 && output[i, 2] < 0.1) {
           n <- n + 1
         }
       }
