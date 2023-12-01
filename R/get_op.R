@@ -90,7 +90,7 @@ op_postp <- function(prior_probability, op_vs) {
 auto_select_postp <- function(prior_probability) {
   select_op <- 0
   select_matrix <- NULL
-  for (op_vs in 1:1000) {
+  for (op_vs in 1:10000) {
     op_s <- op_vs^(2^-1)
     op_m <- op_vs^(2^-2)
     op_p <- op_vs^(2^-3)
