@@ -14,11 +14,24 @@ op_postp <- function(prior_probability, op_vs) {
   op_s <- op_vs^(2^-1)
   op_m <- op_vs^(2^-2)
   op_p <- op_vs^(2^-3)
+  op_bvs<- op_vs^-1
+  op_bs<- op_s^-1
+  op_bm<- op_m^-1
+  op_bp<- op_p^-1
   postp_vs <- op_vs * prior_probability / ((op_vs - 1) * prior_probability + 1)
   postp_s <- op_s * prior_probability / ((op_s - 1) * prior_probability + 1)
   postp_m <- op_m * prior_probability / ((op_m - 1) * prior_probability + 1)
   postp_p <- op_p * prior_probability / ((op_p - 1) * prior_probability + 1)
-  print(c(op_vs, op_s, op_m, op_p, postp_vs, postp_s, postp_m, postp_p))
+  postp_bvs <- 1-op_bvs * prior_probability / ((op_bvs - 1) * prior_probability + 1)
+  postp_bs <- 1-op_bs * prior_probability / ((op_bs - 1) * prior_probability + 1)
+  postp_bm <- 1-op_bm * prior_probability / ((op_bm - 1) * prior_probability + 1)
+  postp_bp <- 1-op_bp * prior_probability / ((op_bp - 1) * prior_probability + 1)
+  evidence_strength<-c("PVS","PS","PM","PP","BP","BM","BS","BVS")
+  OP<-c(op_vs, op_s, op_m, op_p, op_bp,op_bm,op_bs,op_bvs)
+  Post_P<-c(postp_vs, postp_s, postp_m, postp_p,postp_bp, postp_bm,postp_bs,postp_bvs)
+  OP_data<-as.data.frame(t(rbind(evidence_strength,OP,Post_P)))
+  colnames(OP_data)<-c("Evidence Strength","Odds of pathogenicity","Posterior probability of pathogenicity and benignity")
+  print(OP_data)
   output <- matrix(nrow = 17, ncol = 2)
   colnames(output) <- c("Combined_Odds_Path", "Post_P")
   rownames(output) <- c("LP(i)", "LP(ii)", "LP(iii)", "LP(iv)", "LP(v)", "LP(vi)", "P(ia)", "P(ib)", "P(ic)", "P(id)", "P(ii)", "P(iiia)", "P(iiib)", "P(iiic)", "LB(i)", "LB(ii)", "B(i)")
@@ -94,10 +107,23 @@ auto_select_postp <- function(prior_probability) {
     op_s <- op_vs^(2^-1)
     op_m <- op_vs^(2^-2)
     op_p <- op_vs^(2^-3)
+    op_bvs<- op_vs^-1
+    op_bs<- op_s^-1
+    op_bm<- op_m^-1
+    op_bp<- op_p^-1
     postp_vs <- op_vs * prior_probability / ((op_vs - 1) * prior_probability + 1)
     postp_s <- op_s * prior_probability / ((op_s - 1) * prior_probability + 1)
     postp_m <- op_m * prior_probability / ((op_m - 1) * prior_probability + 1)
     postp_p <- op_p * prior_probability / ((op_p - 1) * prior_probability + 1)
+    postp_bvs <- 1-op_bvs * prior_probability / ((op_bvs - 1) * prior_probability + 1)
+    postp_bs <- 1-op_bs * prior_probability / ((op_bs - 1) * prior_probability + 1)
+    postp_bm <- 1-op_bm * prior_probability / ((op_bm - 1) * prior_probability + 1)
+    postp_bp <- 1-op_bp * prior_probability / ((op_bp - 1) * prior_probability + 1)
+    evidence_strength<-c("PVS","PS","PM","PP","BP","BM","BS","BVS")
+    OP<-c(op_vs, op_s, op_m, op_p, op_bp,op_bm,op_bs,op_bvs)
+    Post_P<-c(postp_vs, postp_s, postp_m, postp_p,postp_bp, postp_bm,postp_bs,postp_bvs)
+    OP_data<-as.data.frame(t(rbind(evidence_strength,OP,Post_P)))
+    colnames(OP_data)<-c("Evidence Strength","Odds of pathogenicity","Posterior probability of pathogenicity and benignity")
     output <- matrix(nrow = 17, ncol = 2)
     colnames(output) <- c("Combined_Odds_Path", "Post_P")
     rownames(output) <- c("LP(i)", "LP(ii)", "LP(iii)", "LP(iv)", "LP(v)", "LP(vi)", "P(ia)", "P(ib)", "P(ic)", "P(id)", "P(ii)", "P(iiia)", "P(iiib)", "P(iiic)", "LB(i)", "LB(ii)", "B(i)")
@@ -153,8 +179,7 @@ auto_select_postp <- function(prior_probability) {
     output[17, 1] <- Combined_Odds_Path
     output[17, 2] <- (Combined_Odds_Path * prior_probability) / ((Combined_Odds_Path - 1) * prior_probability + 1)
     if (output[6, 2] > 0.9 && output[14, 2] > 0.99 && output[16, 2] < 0.1 && output[17, 2] < 0.001) {
-      print(output)
-      print(c(op_vs, op_s, op_m, op_p, postp_vs, postp_s, postp_m, postp_p))
+      print(OP_data)
       select_op <- 1
       break
     } else {
@@ -185,15 +210,27 @@ auto_select_postp <- function(prior_probability) {
   }
   if (select_op == 0) {
     select_op <- min(which(select_matrix >= max(select_matrix)))
-    print(eval(parse(text = paste("post_p", select_op, sep = "_"))))
     op_vs <- select_op
     op_s <- op_vs^(2^-1)
     op_m <- op_vs^(2^-2)
     op_p <- op_vs^(2^-3)
+    op_bvs<- op_vs^-1
+    op_bs<- op_s^-1
+    op_bm<- op_m^-1
+    op_bp<- op_p^-1
     postp_vs <- op_vs * prior_probability / ((op_vs - 1) * prior_probability + 1)
     postp_s <- op_s * prior_probability / ((op_s - 1) * prior_probability + 1)
     postp_m <- op_m * prior_probability / ((op_m - 1) * prior_probability + 1)
     postp_p <- op_p * prior_probability / ((op_p - 1) * prior_probability + 1)
-    print(c(op_vs, op_s, op_m, op_p, postp_vs, postp_s, postp_m, postp_p))
+    postp_bvs <- 1-op_bvs * prior_probability / ((op_bvs - 1) * prior_probability + 1)
+    postp_bs <- 1-op_bs * prior_probability / ((op_bs - 1) * prior_probability + 1)
+    postp_bm <- 1-op_bm * prior_probability / ((op_bm - 1) * prior_probability + 1)
+    postp_bp <- 1-op_bp * prior_probability / ((op_bp - 1) * prior_probability + 1)
+    evidence_strength<-c("PVS","PS","PM","PP","BP","BM","BS","BVS")
+    OP<-c(op_vs, op_s, op_m, op_p, op_bp,op_bm,op_bs,op_bvs)
+    Post_P<-c(postp_vs, postp_s, postp_m, postp_p,postp_bp, postp_bm,postp_bs,postp_bvs)
+    OP_data<-as.data.frame(t(rbind(evidence_strength,OP,Post_P)))
+    colnames(OP_data)<-c("Evidence Strength","Odds of pathogenicity","Posterior probability of pathogenicity and benignity")
+    print(OP_data)
   }
 }

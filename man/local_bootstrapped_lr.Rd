@@ -7,6 +7,7 @@
 local_bootstrapped_lr(
   input_data,
   feature,
+  direction,
   alpha,
   bootstrap,
   minpoints,
@@ -18,6 +19,8 @@ local_bootstrapped_lr(
 \item{input_data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
 
 \item{feature}{The column name that requires testing for optimizing the thresholds}
+
+\item{direction}{The direction of evidence pathogenic,{Pathogenic or Benign}}
 
 \item{alpha}{Prior probability}
 
@@ -39,7 +42,7 @@ The one-sided 95\% confidence bound for each estimated lr+  was determined throu
 \dontrun{
 data("ClinVar2020_AJHG_Pejaver_data")
 data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+local_bootstrapped_lr(data, "PrimateAI_score","Pathogenic", 0.1, 10, 100, 0.1, "test_dir")
 }
 
 }

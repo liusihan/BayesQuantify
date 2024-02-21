@@ -5,6 +5,7 @@
 #'
 #' @param input_data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param feature The column name that requires testing for optimizing the thresholds
+#' @param direction The direction of evidence pathogenic,{Pathogenic or Benign}
 #' @param alpha Prior probability
 #' @param minpoints The number of at least pathogenic and non-pathogenic variants
 #' @param increment Sliding window
@@ -16,10 +17,14 @@
 #' \dontrun{
 #' data("ClinVar2020_AJHG_Pejaver_data")
 #' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_lr(data, "PrimateAI_score", 0.1, 100, 0.1)
+#' local_lr(data, "PrimateAI_score", "Pathogenic",0.1, 100, 0.1)
 #' }
 #'
-local_lr <- function(input_data, feature, alpha, minpoints, increment) {
+local_lr <- function(input_data, feature, direction,alpha, minpoints, increment) {
+  if(direction!="Pathogenic" && direction!="Benign"){
+    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
+    break
+  }
   input_data <- input_data[!is.na(input_data[[feature]]), ]
   w <- (1 - alpha) * (sum(input_data$Classification_P == "P")) / (alpha * (sum(input_data$Classification_P == "NonP")))
   thrs <- sort(unique(c(input_data[[feature]], floor(min(input_data[[feature]])), ceiling(max(input_data[[feature]])))))
@@ -54,7 +59,12 @@ local_lr <- function(input_data, feature, alpha, minpoints, increment) {
         break
       }
     }
-    post[i] <- pos / (pos + w * neg)
+    if(direction=="Pathogenic"){
+      post[i] <- pos / (pos + w * neg)
+    }
+    else if(direction=="Benign"){
+      post[i] <- (w * neg) / (pos + w * neg)
+    }
     finalwindow[i] <- halfwindow
     temp <- cbind(thrs[i], post[i], finalwindow[i])
     output <- rbind(output, temp)
@@ -67,6 +77,7 @@ local_lr <- function(input_data, feature, alpha, minpoints, increment) {
 #'
 #' @param input_data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param feature The column name that requires testing for optimizing the thresholds
+#' @param direction The direction of evidence pathogenic,{Pathogenic or Benign}
 #' @param alpha Prior probability
 #' @param bootstrap The number of bootstrapping iterations
 #' @param minpoints The number of at least pathogenic and non-pathogenic variants
@@ -82,16 +93,20 @@ local_lr <- function(input_data, feature, alpha, minpoints, increment) {
 #' \dontrun{
 #' data("ClinVar2020_AJHG_Pejaver_data")
 #' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
+#' local_bootstrapped_lr(data, "PrimateAI_score","Pathogenic", 0.1, 10, 100, 0.1, "test_dir")
 #' }
 #'
-local_bootstrapped_lr <- function(input_data, feature, alpha, bootstrap, minpoints, increment, output_dir) {
+local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstrap, minpoints, increment, output_dir) {
   if (!dir.exists(output_dir)) {
     dir.create(output_dir)
   }
+  if(direction!="Pathogenic" && direction!="Benign"){
+    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
+    break
+  }
   previousWorkPath <- getwd()
   WorkPath <- setwd(output_dir)
-  lr_result <- local_lr(input_data, feature, alpha, minpoints, increment)
+  lr_result <- local_lr(input_data, feature, direction,alpha, minpoints, increment)
   write.table(lr_result, file = "local_lr.txt", sep = "\t", col.names = T, row.names = F, quote = F)
   for (i in c(1:bootstrap)) {
     idx <- sample(1:nrow(input_data), replace = T)

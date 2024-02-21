@@ -6,12 +6,14 @@
 First, all unique tested cutoff values were sorted, then each value was positioned at the center of a sliding window.
 The posterior probability was calculated for each tested cutoff value within the interval, considering a minimum of selected pathogenic and non-pathogenic variants.}
 \usage{
-local_lr(input_data, feature, alpha, minpoints, increment)
+local_lr(input_data, feature, direction, alpha, minpoints, increment)
 }
 \arguments{
 \item{input_data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
 
 \item{feature}{The column name that requires testing for optimizing the thresholds}
+
+\item{direction}{The direction of evidence pathogenic,{Pathogenic or Benign}}
 
 \item{alpha}{Prior probability}
 
@@ -31,7 +33,7 @@ The posterior probability was calculated for each tested cutoff value within the
 \dontrun{
 data("ClinVar2020_AJHG_Pejaver_data")
 data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_lr(data, "PrimateAI_score", 0.1, 100, 0.1)
+local_lr(data, "PrimateAI_score", "Pathogenic",0.1, 100, 0.1)
 }
 
 }
