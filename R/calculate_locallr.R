@@ -23,7 +23,6 @@
 local_lr <- function(input_data, feature, direction,alpha, minpoints, increment) {
   if(direction!="Pathogenic" && direction!="Benign"){
     return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
-    break
   }
   input_data <- input_data[!is.na(input_data[[feature]]), ]
   w <- (1 - alpha) * (sum(input_data$Classification_P == "P")) / (alpha * (sum(input_data$Classification_P == "NonP")))
@@ -102,7 +101,6 @@ local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstra
   }
   if(direction!="Pathogenic" && direction!="Benign"){
     return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
-    break
   }
   previousWorkPath <- getwd()
   WorkPath <- setwd(output_dir)
