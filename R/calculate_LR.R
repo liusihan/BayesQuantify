@@ -8,6 +8,7 @@
 #'
 #' @importFrom plyr rename
 #' @importFrom dplyr `%>%` mutate
+#' @import stringr
 #'
 #' @return A fresh DataFrame incorporating the input data with additional column
 #' @export
@@ -26,7 +27,61 @@ discrete_cutoff <- function(data, feature, range = NULL, criteria = NULL) {
     }
     return(data)
   } else if (is.null(range) && (!(is.null(criteria)))) {
-    data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+    code <- unlist(str_split(criteria,"_"))[1]
+    strength <- unlist(str_split(criteria,"_"))[2]
+    if (str_detect(code,"^PP") | str_detect(code,"^BP")){
+      if(is.na(strength)){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_Moderate")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], paste(code,"_",sep="")), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_Strong")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria) | str_detect(data[, feature_col], paste(code,"_VeryStrong",sep="")), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_VeryStrong")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria)), 1, 0) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+    } else if(str_detect(code,"^PM") | str_detect(code,"^BM")){
+      if(str_detect(criteria,"_Supporting")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], code), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(is.na(strength)){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], paste(code,"_Strong",sep="")) | str_detect(data[, feature_col], paste(code,"_VeryStrong",sep=""))| (sapply(str_split(str_replace_all(data[, feature_col]," ",""),","),function(x) code %in% x)), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_Strong")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], paste(code,"_VeryStrong",sep="")) | str_detect(data[, feature_col], criteria), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_VeryStrong")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+    } else if(str_detect(code,"^PS")| str_detect(code,"^BS")){
+      if(str_detect(criteria,"_Supporting")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], code), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_Moderate")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria) | str_detect(data[, feature_col], paste(code,"_VeryStrong",sep=""))| (sapply(str_split(str_replace_all(data[, feature_col]," ",""),","),function(x) code %in% x)), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(is.na(strength)){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], paste(code,"_VeryStrong",sep=""))| (sapply(str_split(str_replace_all(data[, feature_col]," ",""),","),function(x) code %in% x)), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if (str_detect(criteria,"_VeryStrong")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+    } else if(str_detect(code,"^PVS")| str_detect(code,"^BVS")){
+      if(str_detect(criteria,"_Supporting")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], code), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_Moderate")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], paste(code,"_Strong",sep="")) | str_detect(data[, feature_col], criteria)| (sapply(str_split(str_replace_all(data[, feature_col]," ",""),","),function(x) code %in% x)), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(str_detect(criteria,"_Strong")){
+        data <- mutate(data, test = ifelse(str_detect(data[, feature_col], criteria) | (sapply(str_split(str_replace_all(data[, feature_col]," ",""),","),function(x) code %in% x)), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+      else if(is.na(strength)){
+        data <- mutate(data, test = ifelse(code %in% unlist(str_split(str_replace_all(data[, feature_col]," ",""),",")), 1, 0)) %>% plyr::rename(c("test" = paste(criteria, "", sep = "")))
+      }
+    }
     return(data)
   } else {
     return(message("Error: Please use either the range or criteria parameters."))
@@ -56,18 +111,22 @@ discrete_cutoff <- function(data, feature, range = NULL, criteria = NULL) {
 #' data("VCI_data")
 #' data <- add_info(VCI_data, "Assertion")
 #' data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
+#' data <- VCI_data[!is.na(VCI_data$`Applied Evidence Codes (Met)`),]
+#' all_evidence <- unlist(str_replace_all(VCI_data$`Applied Evidence Codes (Met)`," ", ""))
+#' split_evidence <- strsplit(all_evidence, ",")
+#' unique_evidence <- unique(unlist(split_evidence))
+#' P_evidence<-grep("^P", unique_evidence, value = TRUE)
 #' library(dplyr)
 #' truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM2")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP3")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP1")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PVS1")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PS1")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PS2")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM3")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM4")
-#' truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM5")
-#' LR(truth_set, 28, 36)
+#' for(i in P_evidence){
+#'   truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
+#' }
+#' LR(truth_set, 28, 72)
+#' rownames(LR_result)<-LR_result[,1]
+#' LR_result<-LR_result[,-1]
+#' name_evidence<-rownames(LR_result)
+#' LR_result<-data.frame(lapply(LR_result,as.numeric))
+#' rownames(LR_result)<-name_evidence
 #' }
 #'
 LR <- function(data, start, end) {
@@ -82,7 +141,6 @@ LR <- function(data, start, end) {
         TN <- table(data$Classification_P, data[, i])[1]
         total <- TP + FN + TN + FP
         # confu_final<-cbind(a$truePos,a$totalDzPos,a$trueNeg,a$totalDzNeg,a[1],a[2],a[3],a[4])
-        Prevalence <- (TP + FN) / total
         Accuracy <- (TP + TN) / total
         PPV <- TP / (TP + FP)
         NPV <- TN / (FN + TN)

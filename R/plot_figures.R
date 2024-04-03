@@ -142,7 +142,7 @@ multi_plot <- function(data, classification_col, gene_col, consequence_col=NULL)
 #'
 #' @examples
 #' data("LR_result")
-#' op_list <- c(2.11, 4.46, 19.90, 397)
+#' op_list <- c(2.08, 4.33, 18.70, 350)
 #' heatmap_LR(LR_result, op_list)
 #'
 heatmap_LR <- function(data, op_list) {

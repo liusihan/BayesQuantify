@@ -19,7 +19,7 @@ Visualize the results of LR+ for each evaluated cutoff
 }
 \examples{
 data("LR_result")
-op_list <- c(2.11, 4.46, 19.90, 397)
+op_list <- c(2.08, 4.33, 18.70, 350)
 heatmap_LR(LR_result, op_list)
 
 }

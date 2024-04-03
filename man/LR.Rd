@@ -36,18 +36,22 @@ Estimates of 95\% CI of LR+ were generated using bootstrapping in the R package,
 data("VCI_data")
 data <- add_info(VCI_data, "Assertion")
 data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
+data <- VCI_data[!is.na(VCI_data$`Applied Evidence Codes (Met)`),]
+all_evidence <- unlist(str_replace_all(VCI_data$`Applied Evidence Codes (Met)`," ", ""))
+split_evidence <- strsplit(all_evidence, ",")
+unique_evidence <- unique(unlist(split_evidence))
+P_evidence<-grep("^P", unique_evidence, value = TRUE)
 library(dplyr)
 truth_set <- filter(data,VUS_class \%in\% c("IceCold","Cold","Cool",""))
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM2")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP3")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PP1")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PVS1")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PS1")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PS2")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM3")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM4")
-truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = "PM5")
-LR(truth_set, 28, 36)
+for(i in P_evidence){
+  truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
+}
+LR(truth_set, 28, 72)
+rownames(LR_result)<-LR_result[,1]
+LR_result<-LR_result[,-1]
+name_evidence<-rownames(LR_result)
+LR_result<-data.frame(lapply(LR_result,as.numeric))
+rownames(LR_result)<-name_evidence
 }
 
 }
