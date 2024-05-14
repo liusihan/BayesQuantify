@@ -15,9 +15,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("ClinVar2020_AJHG_Pejaver_data")
-#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_lr(data, "PrimateAI_score", "Pathogenic",0.1, 100, 0.1)
+#' data("ClinVar_2019_dataset")
+#' data <- add_info(ClinVar_2019_dataset, "clnsig")
+#' local_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 100, 0.01)
 #' }
 #'
 local_lr <- function(input_data, feature, direction,alpha, minpoints, increment) {
@@ -90,9 +90,9 @@ local_lr <- function(input_data, feature, direction,alpha, minpoints, increment)
 #'
 #' @examples
 #' \dontrun{
-#' data("ClinVar2020_AJHG_Pejaver_data")
-#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score","Pathogenic", 0.1, 10, 100, 0.1, "test_dir")
+#' data("ClinVar_2019_dataset")
+#' data <- add_info(ClinVar_2019_dataset, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score","Pathogenic", 0.0441, 10000, 100, 0.01, "test_dir")
 #' }
 #'
 local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstrap, minpoints, increment, output_dir) {
@@ -109,7 +109,7 @@ local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstra
   for (i in c(1:bootstrap)) {
     idx <- sample(1:nrow(input_data), replace = T)
     sample_data <- input_data[idx, ]
-    bootstrap_i <- local_lr(sample_data, feature, alpha, minpoints, increment)
+    bootstrap_i <- local_lr(sample_data, feature, direction,alpha, minpoints, increment)
     write.table(bootstrap_i, file = paste("bootstrap_", i, ".txt", sep = ""), sep = "\t", col.names = T, row.names = F, quote = F)
   }
   setwd(previousWorkPath)
@@ -129,11 +129,11 @@ local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstra
 #'
 #' @examples
 #' \dontrun{
-#' data("ClinVar2020_AJHG_Pejaver_data")
-#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
-#' postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
-#' get_lr_threshold(postp_list, 0.05, 10, "test_dir")
+#' data("ClinVar_2019_dataset")
+#' data <- add_info(ClinVar_2019_dataset, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+#' postp_list <- c(0.100, 0.211, 0.608, 0.981)
+#' get_lr_threshold(postp_list, 0.05, 10000, "test_dir")
 #' }
 #'
 get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
@@ -185,10 +185,10 @@ get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
 #'
 #' @examples
 #' \dontrun{
-#' data("ClinVar2020_AJHG_Pejaver_data")
-#' data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
-#' lr_CI_result <- lr_CI(30, "test_dir")
+#' data("ClinVar_2019_dataset")
+#' data <- add_info(ClinVar_2019_dataset, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+#' lr_CI_result <- lr_CI(10000, "test_dir")
 #' }
 #'
 lr_CI <- function(bootstrap, dir) {

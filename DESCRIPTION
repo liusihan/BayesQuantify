@@ -1,10 +1,10 @@
 Package: BayesQuantify
-Title: Quantifying the Strength of Evidence for ACMG/AMP Criteria using a Bayesian Framework
+Title: An R package utilized to refine the ACMG/AMP criteria according to the Bayesian framework
 Version: 1.0.0
 Authors@R: 
     person("Sihan", "Liu", , "liusihan@wchscu.cn", role = c("aut", "cre"))
-Description: The guidelines proposed by the American College of Medical Genetics and Genomics (ACMG) and the Association for Molecular Pathology (AMP)have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the Clinical Genome Resource (ClinGen) Sequence Variant Interpretation (SVI) Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4 criteria. However, there are challenges for clinicians in utilising the Bayesian Classification Framework, as tools and software for convincingly calculating the positive likelihood ratio and local positive likelihood ratio are lacking.
-    This package provide a comprehensive functions to define the thresholds for each evidence strength level.
+Description: The guidelines proposed by the American College of Medical Genetics and Genomics (ACMG) and the Association for Molecular Pathology (AMP)have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the Clinical Genome Resource (ClinGen) Sequence Variant Interpretation (SVI) Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4 criteria. However, xisting software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking.
+    This package provide users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

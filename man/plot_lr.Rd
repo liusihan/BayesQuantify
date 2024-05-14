@@ -19,9 +19,9 @@ Generate plots depicting the results of lr+ for each tested cutoff
 }
 \examples{
 data("lr_CI_result")
-# data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-# local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
-postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
+# data <- add_info(ClinVar_2019_dataset, "clnsig")
+# local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+postp_list <- c(0.100, 0.211, 0.608, 0.981)
 # lr_CI_result <- lr_CI(30, "test_dir")
 plot_lr(lr_CI_result, postp_list)
 

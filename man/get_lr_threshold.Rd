@@ -23,11 +23,11 @@ Establish the thresholds for each level of evidence strength
 }
 \examples{
 \dontrun{
-data("ClinVar2020_AJHG_Pejaver_data")
-data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 10, 100, 0.1, "test_dir")
-postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
-get_lr_threshold(postp_list, 0.05, 10, "test_dir")
+data("ClinVar_2019_dataset")
+data <- add_info(ClinVar_2019_dataset, "clnsig")
+local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+postp_list <- c(0.100, 0.211, 0.608, 0.981)
+get_lr_threshold(postp_list, 0.05, 10000, "test_dir")
 }
 
 }

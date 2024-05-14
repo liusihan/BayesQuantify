@@ -19,8 +19,8 @@ Classifying variants into five distinct categories according to the scaled point
 }
 \examples{
 \dontrun{
-data("VCI_data")
-Point_Classification(VCI_data, "Applied Evidence Codes (Met)")
+data("ClinGen_dataset")
+Point_Classification(ClinGen_dataset, "Applied Evidence Codes (Met)")
 }
 
 }

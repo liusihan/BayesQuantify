@@ -10,8 +10,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("VCI_data")
-#' ACMG_Classification(VCI_data, "Applied Evidence Codes (Met)")
+#' data("ClinGen_dataset")
+#' ACMG_Classification(ClinGen_dataset, "Applied Evidence Codes (Met)")
 #' }
 #'
 ACMG_Classification <- function(data, evidence_col) {
@@ -94,7 +94,7 @@ ACMG_Classification <- function(data, evidence_col) {
 #' @param data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param evidence_col The column name for ACMG evidence(str)
 #' @param prior_p The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)
-#' @param op_vs Odds path of "Very String"
+#' @param op_vs Odds of pathogenicity (OP) of "Very String"
 #'
 #' @import stringr
 #' @return A new DataFrame that incorporates the input data and the results of variant classification
@@ -102,8 +102,8 @@ ACMG_Classification <- function(data, evidence_col) {
 #'
 #' @examples
 #' \dontrun{
-#' data("VCI_data")
-#' BCF(VCI_data, "Applied Evidence Codes (Met)", 0.1, 350)
+#' data("ClinGen_dataset")
+#' BCF(ClinGen_dataset, "Applied Evidence Codes (Met)", 0.1, 350)
 #' }
 #'
 BCF <- function(data, evidence_col, prior_p, op_vs) {
@@ -161,8 +161,8 @@ BCF <- function(data, evidence_col, prior_p, op_vs) {
 #'
 #' @examples
 #' \dontrun{
-#' data("VCI_data")
-#' Point_Classification(VCI_data, "Applied Evidence Codes (Met)")
+#' data("ClinGen_dataset")
+#' Point_Classification(ClinGen_dataset, "Applied Evidence Codes (Met)")
 #' }
 #'
 Point_Classification <- function(data, evidence_col) {

@@ -33,11 +33,11 @@ Estimates of 95\% CI of LR+ were generated using bootstrapping in the R package,
 }
 \examples{
 \dontrun{
-data("VCI_data")
-data <- add_info(VCI_data, "Assertion")
+data("ClinGen_dataset")
+data <- add_info(ClinGen_dataset, "Assertion")
 data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
-data <- VCI_data[!is.na(VCI_data$`Applied Evidence Codes (Met)`),]
-all_evidence <- unlist(str_replace_all(VCI_data$`Applied Evidence Codes (Met)`," ", ""))
+#data <- data[data$`Applied Evidence Codes (Met)`!="",]
+all_evidence <- unlist(str_replace_all(data$`Applied Evidence Codes (Met)`," ", ""))
 split_evidence <- strsplit(all_evidence, ",")
 unique_evidence <- unique(unlist(split_evidence))
 P_evidence<-grep("^P", unique_evidence, value = TRUE)
@@ -46,12 +46,14 @@ truth_set <- filter(data,VUS_class \%in\% c("IceCold","Cold","Cool",""))
 for(i in P_evidence){
   truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
 }
-LR(truth_set, 28, 72)
+LR_result<-LR(truth_set, 28, 72)
 rownames(LR_result)<-LR_result[,1]
 LR_result<-LR_result[,-1]
 name_evidence<-rownames(LR_result)
 LR_result<-data.frame(lapply(LR_result,as.numeric))
 rownames(LR_result)<-name_evidence
+LR_result<-LR_result[c(-1,-2,-4,-5,-6,-7,-8,-10,-11,-12,-14,-17,-18,-19,-20,-21,-22,-24,-25,-26),]
+LR_result<-LR_result[c(2,4,6,1,3,5),]
 }
 
 }

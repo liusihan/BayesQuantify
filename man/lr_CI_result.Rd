@@ -3,9 +3,9 @@
 \docType{data}
 \name{lr_CI_result}
 \alias{lr_CI_result}
-\title{locallr results for PrimateAI_score in ClinVar2020_AJHG_Pejaver_data}
+\title{Local posterior probability and one-sided 95\% confidence intervals of the local posterior probability for each unique PrimateAI score in the ClinVar 2019 dataset}
 \format{
-A data frame with 8586 rows and 3 variables:
+A data frame with 8596 rows and 3 variables:
 \describe{
 \item{test_cutoff}{Each PrimateAI score}
 \item{Posterior}{Posterior probability}
@@ -14,12 +14,12 @@ A data frame with 8586 rows and 3 variables:
 }
 }
 \source{
-ClinVar2020_AJHG_Pejaver_data
+ClinVar_2019_dataset
 }
 \usage{
 lr_CI_result
 }
 \description{
-locallr results for PrimateAI_score in ClinVar2020_AJHG_Pejaver_data
+Local posterior probability and one-sided 95\% confidence intervals of the local posterior probability for each unique PrimateAI score in the ClinVar 2019 dataset
 }
 \keyword{datasets}

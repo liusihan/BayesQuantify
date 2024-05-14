@@ -22,9 +22,9 @@ Figures
 Visualize the distribution of variants
 }
 \examples{
-data("VCI_data")
-VCI_data <- add_info(VCI_data, "Assertion")
-VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
-multi_plot(VCI_data, "Assertion", "HGNC Gene Symbol")
+data("ClinGen_dataset")
+ClinGen_dataset <- add_info(ClinGen_dataset, "Assertion")
+ClinGen_dataset <- VUS_classify(ClinGen_dataset, "Assertion", "Applied Evidence Codes (Met)")
+multi_plot(ClinGen_dataset, "Assertion", "HGNC Gene Symbol")
 
 }

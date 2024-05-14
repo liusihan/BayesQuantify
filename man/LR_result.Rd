@@ -3,7 +3,7 @@
 \docType{data}
 \name{LR_result}
 \alias{LR_result}
-\title{LR results for VCI_data}
+\title{Evaluation metrics and positive likelihood ratio for PM2 and PM2_Supporting derived from the ClinGen Curated Variants dataset}
 \format{
 A data frame with 8 rows and 20 variables:
 \describe{
@@ -31,12 +31,12 @@ A data frame with 8 rows and 20 variables:
 }
 }
 \source{
-VCI_data
+ClinGen_dataset
 }
 \usage{
 LR_result
 }
 \description{
-LR results for VCI_data
+Evaluation metrics and positive likelihood ratio for PM2 and PM2_Supporting derived from the ClinGen Curated Variants dataset
 }
 \keyword{datasets}

@@ -10,10 +10,10 @@ op_postp(prior_probability, op_vs)
 \arguments{
 \item{prior_probability}{The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)}
 
-\item{op_vs}{Odds path of "Very String"}
+\item{op_vs}{Odds of pathogenicity (OP) of "Very String"}
 }
 \value{
-Combined odds_path and posterior probability of 17 combination rules outlined by avtigian et al.(2018)
+Prior_probability, OP for each evidence level and Combined odds_path and posterior probability of 17 combination rules outlined by avtigian et al.(2018)
 }
 \description{
 Calculate the corresponding combined odds_path and posterior probability of

@@ -36,7 +36,7 @@ Variants classified as cool, cold, or ice cold were considered as benign-leaning
 Variants classified as hot, warm, or tepid were considered to be pathogenic-leaning VUS.
 }
 \examples{
-data("VCI_data")
-VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
+data("ClinGen_dataset")
+ClinGen_dataset <- VUS_classify(ClinGen_dataset, "Assertion", "Applied Evidence Codes (Met)")
 
 }

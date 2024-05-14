@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_op.R
 \name{auto_select_postp}
 \alias{auto_select_postp}
-\title{Automatic definition of posterior probability and positive likelihood ratio values
+\title{Automatic definition of posterior probability and odds of pathogenicity values
 for different strengths of evidence}
 \usage{
 auto_select_postp(prior_probability)
@@ -11,10 +11,10 @@ auto_select_postp(prior_probability)
 \item{prior_probability}{The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)}
 }
 \value{
-Selected odds path for each evidence level, combined odds path and posterior probability of 17 combination rules
+Prior_probability and OP for each evidence level
 }
 \description{
-Automatic definition of posterior probability and positive likelihood ratio values
+Automatic definition of posterior probability and odds of pathogenicity values
 for different strengths of evidence
 }
 \examples{

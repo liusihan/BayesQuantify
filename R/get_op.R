@@ -2,9 +2,9 @@
 #' 17 combination rules for a given prior_probability and odds_path of pathogenicity
 #'
 #' @param prior_probability The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)
-#' @param op_vs Odds path of "Very String"
+#' @param op_vs Odds of pathogenicity (OP) of "Very String"
 #'
-#' @return Combined odds_path and posterior probability of 17 combination rules outlined by avtigian et al.(2018)
+#' @return Prior_probability, OP for each evidence level and Combined odds_path and posterior probability of 17 combination rules outlined by avtigian et al.(2018)
 #' @export
 #'
 #' @examples
@@ -89,12 +89,12 @@ op_postp <- function(prior_probability, op_vs) {
   print(output)
 }
 
-#' Automatic definition of posterior probability and positive likelihood ratio values
+#' Automatic definition of posterior probability and odds of pathogenicity values
 #' for different strengths of evidence
 #'
 #' @param prior_probability The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)
 #'
-#' @return Selected odds path for each evidence level, combined odds path and posterior probability of 17 combination rules
+#' @return Prior_probability and OP for each evidence level
 #' @export
 #'
 #' @examples

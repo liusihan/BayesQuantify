@@ -20,10 +20,10 @@
 #' @export
 #'
 #' @examples
-#' data("VCI_data")
-#' VCI_data <- add_info(VCI_data, "Assertion")
-#' VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
-#' multi_plot(VCI_data, "Assertion", "HGNC Gene Symbol")
+#' data("ClinGen_dataset")
+#' ClinGen_dataset <- add_info(ClinGen_dataset, "Assertion")
+#' ClinGen_dataset <- VUS_classify(ClinGen_dataset, "Assertion", "Applied Evidence Codes (Met)")
+#' multi_plot(ClinGen_dataset, "Assertion", "HGNC Gene Symbol")
 #'
 multi_plot <- function(data, classification_col, gene_col, consequence_col=NULL) {
   classification_num <- which(colnames(data) == classification_col)
@@ -194,9 +194,9 @@ heatmap_LR <- function(data, op_list) {
 #'
 #' @examples
 #' data("lr_CI_result")
-#' # data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-#' # local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
-#' postp_list <- c(0.1778350, 0.3129676, 0.6689245, 0.9754584)
+#' # data <- add_info(ClinVar_2019_dataset, "clnsig")
+#' # local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+#' postp_list <- c(0.100, 0.211, 0.608, 0.981)
 #' # lr_CI_result <- lr_CI(30, "test_dir")
 #' plot_lr(lr_CI_result, postp_list)
 #'
@@ -209,6 +209,7 @@ plot_lr <- function(data, postp_list) {
     geom_hline(yintercept = postp_list[4], colour = "red", linetype = 1, size = 1) +
     geom_hline(yintercept = postp_list[3], colour = "red", linetype = 2, size = 1) +
     geom_hline(yintercept = postp_list[2], colour = "red", linetype = 3, size = 1) +
-    geom_hline(yintercept = postp_list[1], colour = "red", linetype = 4, size = 1)
+    geom_hline(yintercept = postp_list[1], colour = "red", linetype = 4, size = 1) +
+    ylab("Posterior probability")
   return(Figurelr)
 }

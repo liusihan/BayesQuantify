@@ -31,9 +31,9 @@ The posterior probability was calculated for each tested cutoff value within the
 }
 \examples{
 \dontrun{
-data("ClinVar2020_AJHG_Pejaver_data")
-data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_lr(data, "PrimateAI_score", "Pathogenic",0.1, 100, 0.1)
+data("ClinVar_2019_dataset")
+data <- add_info(ClinVar_2019_dataset, "clnsig")
+local_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 100, 0.01)
 }
 
 }

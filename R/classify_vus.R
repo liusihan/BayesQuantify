@@ -1,4 +1,4 @@
-#' Count the number of "supportive", "moderate", "strong" and "very strong" strengths of evidence for pathogenicity
+#' Count the number of "supporting", "moderate", "strong" and "very strong" strengths of evidence for pathogenicity
 #'
 #' @param data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param classification_col The column name for variant classification (str). Variants should be classified into five distinct categories: "P," "LP," "B," "LB," and "VUS."
@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-#' data("VCI_data")
-#' VCI_data <- add_info(VCI_data, "Assertion")
+#' data("ClinGen_dataset")
+#' ClinGen_dataset <- add_info(ClinGen_dataset, "Assertion")
 #'
 add_info <- function(data, classification_col) {
   classification_num <- which(colnames(data) == classification_col)
@@ -53,8 +53,8 @@ add_info <- function(data, classification_col) {
 #' @export
 #'
 #' @examples
-#' data("VCI_data")
-#' VCI_data <- VUS_classify(VCI_data, "Assertion", "Applied Evidence Codes (Met)")
+#' data("ClinGen_dataset")
+#' ClinGen_dataset <- VUS_classify(ClinGen_dataset, "Assertion", "Applied Evidence Codes (Met)")
 #'
 VUS_classify <- function(data, classification_col, evidence_col) {
   classification_num <- which(colnames(data) == classification_col)

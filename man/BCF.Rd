@@ -13,7 +13,7 @@ BCF(data, evidence_col, prior_p, op_vs)
 
 \item{prior_p}{The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)}
 
-\item{op_vs}{Odds path of "Very String"}
+\item{op_vs}{Odds of pathogenicity (OP) of "Very String"}
 }
 \value{
 A new DataFrame that incorporates the input data and the results of variant classification
@@ -23,8 +23,8 @@ Classifying variants into five distinct categories according to the Bayesian cla
 }
 \examples{
 \dontrun{
-data("VCI_data")
-BCF(VCI_data, "Applied Evidence Codes (Met)", 0.1, 350)
+data("ClinGen_dataset")
+BCF(ClinGen_dataset, "Applied Evidence Codes (Met)", 0.1, 350)
 }
 
 }

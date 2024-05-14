@@ -2,7 +2,7 @@
 % Please edit documentation in R/classify_vus.R
 \name{add_info}
 \alias{add_info}
-\title{Count the number of "supportive", "moderate", "strong" and "very strong" strengths of evidence for pathogenicity}
+\title{Count the number of "supporting", "moderate", "strong" and "very strong" strengths of evidence for pathogenicity}
 \usage{
 add_info(data, classification_col)
 }
@@ -15,10 +15,10 @@ add_info(data, classification_col)
 A new DataFrame that includes the input data and four new columns, these four columns count the number of different pathogenic evidence strengths for each variant, which can be used for further categorization
 }
 \description{
-Count the number of "supportive", "moderate", "strong" and "very strong" strengths of evidence for pathogenicity
+Count the number of "supporting", "moderate", "strong" and "very strong" strengths of evidence for pathogenicity
 }
 \examples{
-data("VCI_data")
-VCI_data <- add_info(VCI_data, "Assertion")
+data("ClinGen_dataset")
+ClinGen_dataset <- add_info(ClinGen_dataset, "Assertion")
 
 }

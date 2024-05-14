@@ -22,7 +22,7 @@ A fresh DataFrame incorporating the input data with additional column
 Introducing columns to assess if the observed value is above (1) or below (0) a tested cutoff. A value of 1 indicates being above the tested cutoff, while 0 indicates being below the tested cutoff
 }
 \examples{
-data("VCI_data")
-discrete_cutoff(VCI_data, "Applied Evidence Codes (Met)", criteria = "PM2")
+data("ClinGen_dataset")
+discrete_cutoff(ClinGen_dataset, "Applied Evidence Codes (Met)", criteria = "PM2")
 
 }

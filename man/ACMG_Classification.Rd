@@ -19,8 +19,8 @@ Classifying variants into five distinct categories according to the 2015 ACMG/AM
 }
 \examples{
 \dontrun{
-data("VCI_data")
-ACMG_Classification(VCI_data, "Applied Evidence Codes (Met)")
+data("ClinGen_dataset")
+ACMG_Classification(ClinGen_dataset, "Applied Evidence Codes (Met)")
 }
 
 }

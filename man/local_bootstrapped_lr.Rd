@@ -40,9 +40,9 @@ The one-sided 95\% confidence bound for each estimated lr+  was determined throu
 }
 \examples{
 \dontrun{
-data("ClinVar2020_AJHG_Pejaver_data")
-data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_bootstrapped_lr(data, "PrimateAI_score","Pathogenic", 0.1, 10, 100, 0.1, "test_dir")
+data("ClinVar_2019_dataset")
+data <- add_info(ClinVar_2019_dataset, "clnsig")
+local_bootstrapped_lr(data, "PrimateAI_score","Pathogenic", 0.0441, 10000, 100, 0.01, "test_dir")
 }
 
 }

@@ -19,10 +19,10 @@ Merging the results from bootstrap
 }
 \examples{
 \dontrun{
-data("ClinVar2020_AJHG_Pejaver_data")
-data <- add_info(ClinVar2020_AJHG_Pejaver_data, "clnsig")
-local_bootstrapped_lr(data, "PrimateAI_score", 0.1, 30, 100, 0.1, "test_dir")
-lr_CI_result <- lr_CI(30, "test_dir")
+data("ClinVar_2019_dataset")
+data <- add_info(ClinVar_2019_dataset, "clnsig")
+local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+lr_CI_result <- lr_CI(10000, "test_dir")
 }
 
 }
