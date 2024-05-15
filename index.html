@@ -61,12 +61,18 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The ACMG/AMP guidelines have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the ClinGen Sequence Variant Interpretation Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4. However, existing software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking.</p>
-<p>The <code>BayesQuantify</code> R Package provide users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier</p>
+<p>The ACMG/AMP guidelines have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the ClinGen Sequence Variant Interpretation Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4. <strong>However, existing software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking</strong>.</p>
+<p>The <strong><code>BayesQuantify</code></strong> R Package provide users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier. The functions included in BayesQuantify consists of six main steps (as shown in Figure 1):</p>
+<div class="float">
+<img src="https://github.com/liusihan/BayesQuantify/blob/master/Figure1.jpg?raw=true" alt="Figure 1"><div class="figcaption">Figure 1</div>
+</div>
+<p align="center">
+Figure 1. Schematic overview of BayesQuantify.
+</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install <code>BayesQuantify</code> from GitHub:</p>
+<p>You can install <strong><code>BayesQuantify</code></strong> from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"liusihan/BayesQuantify"</span><span class="op">)</span></span></code></pre></div>
@@ -77,38 +83,50 @@
 <div class="section level3">
 <h3 id="required-input-dataset">Required input dataset<a class="anchor" aria-label="anchor" href="#required-input-dataset"></a>
 </h3>
-<p><strong>The package requires one essential input: a data.frame containing variants classification results, including the variants, ACMG/AMP evidence, variant classification, and tested features. Two distinct example datasets, the ClinGen Curated Variants dataset (referred to as dataset 1) and the ClinVar 2019 dataset (referred to as dataset 2), were included in the ‘BayesQuantify’ package:</strong></p>
+<p>The package requires one essential input: <strong>a data.frame containing variants classification results, including the variants, ACMG/AMP evidence, variant classification, and tested features</strong>. Two distinct example datasets, the ClinGen Curated Variants dataset (referred to as dataset 1) and the ClinVar 2019 dataset (referred to as dataset 2), were included in the ‘BayesQuantify’ package:</p>
 <table class="table">
 <colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
+<col width="20%">
 </colgroup>
 <thead><tr class="header">
 <th>#Variation</th>
 <th>Assertion</th>
 <th>Applied Evidence Codes (Met)</th>
 <th>HGNC Gene Symbol</th>
+<th>…</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>NM_000277.2(PAH):c.1A&gt;G (p.Met1Val)</td>
+<td>NM_000277.2(PAH):c.1A&gt;G</td>
 <td>Pathogenic</td>
 <td>PS3, PM3, PP4_Moderate, PM2</td>
 <td>PAH</td>
+<td>…</td>
 </tr>
 <tr class="even">
-<td>NM_000277.2(PAH):c.169G&gt;A (p.Glu57Lys)</td>
+<td>NM_000277.2(PAH):c.169G&gt;A</td>
 <td>Uncertain Significance</td>
 <td>PM3_Supporting, PM2, PP4_Moderate</td>
 <td>PAH</td>
+<td>…</td>
 </tr>
 <tr class="odd">
-<td>NM_000314.6(PTEN):c.1104T&gt;C (p.Asp368=)</td>
+<td>NM_000314.6(PTEN):c.1104T&gt;C</td>
 <td>Likely Benign</td>
 <td>BP4, BP7, BS1</td>
 <td>PTEN</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
 </tr>
 </tbody>
 </table>
@@ -116,7 +134,7 @@
 <div class="section level3">
 <h3 id="usage-examples">Usage examples<a class="anchor" aria-label="anchor" href="#usage-examples"></a>
 </h3>
-<p>The detailed usage of <code>BayesQuantify</code> can be found <a href="https://cran.r-project.org/web/packages/mclust/index.html" class="external-link">here</a>:</p>
+<p><strong>Comprehensive instructions for using <code>BayesQuantify</code> are available <a href="https://github.com/liusihan/BayesQuantify/blob/8e6bd18f32b751e1c2ebdd41d172da89f6f0ed7d/BayesQuantify_1.0.0.pdf" class="external-link">here</a>.</strong></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Calculating positive likelihood ratio (LR) for each tested cutoff (for discrete cutoffs)</span></span>
@@ -159,12 +177,12 @@
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>This project is licensed under GNU GPL v3.</p>
+<p>This project is licensed under MIT.</p>
 </div>
 <div class="section level2">
 <h2 id="authors">Authors<a class="anchor" aria-label="anchor" href="#authors"></a>
 </h2>
-<p>Sihan Liu (West china hospital)</p>
+<p>Sihan Liu (Institute of Rare Diseases, West China Hospital)</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
