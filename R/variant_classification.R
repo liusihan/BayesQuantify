@@ -35,10 +35,10 @@ ACMG_Classification <- function(data, evidence_col) {
       PM2 <- str_count(string = p_evidence, pattern = "PM2_Supporting")
       p_class <- ""
       b_class <- ""
-      if (p_VeryStrong == 1 && p_Moderate == 1) {
+      if (p_VeryStrong >= 1 && p_Moderate == 1) {
         p_class <- "LP"
       }
-      if (p_Strong == 1 && p_Moderate >= 1) {
+      if (p_Strong == 1 && (p_Moderate == 1 || p_Moderate == 2)) {
         p_class <- "LP"
       }
       if (p_Strong == 1 && p_Supporting >= 2) {
@@ -56,23 +56,26 @@ ACMG_Classification <- function(data, evidence_col) {
       if (PVS1 == 1 && PM2 == 1) {
         p_class <- "LP"
       }
-      if (p_VeryStrong == 1) {
+      if (p_VeryStrong >= 1) {
         if (p_Strong >= 1 || p_Moderate >= 2 || p_Supporting >= 2 || (p_Moderate == 1 && p_Supporting == 1)) {
           p_class <- "P"
         }
       }
+      if (p_VeryStrong >= 2) {
+        p_class <- "P"
+      }
       if (p_Strong >= 2) {
         p_class <- "P"
       }
-      if (p_Strong >= 1) {
-        if (p_Moderate >= 3 || (p_Moderate >= 2 && p_Supporting >= 2) || (p_Moderate >= 1 && p_Supporting >= 4)) {
+      if (p_Strong == 1) {
+        if (p_Moderate >= 3 || (p_Moderate == 2 && p_Supporting >= 2) || (p_Moderate == 1 && p_Supporting >= 4)) {
           p_class <- "P"
         }
       }
-      if ((b_Strong == 1 && b_Supporting >= 1) || (b_Supporting >= 2) || (b_Strong == 1 && b_Moderate == 1) || ((b_Supporting >= 1 && b_Moderate == 1))) {
+      if ((b_Strong == 1 && b_Supporting == 1) || (b_Supporting >= 2) || (b_Strong == 1 && b_Moderate == 1) || ((b_Supporting == 1 && b_Moderate >= 1))) {
         b_class <- "LB"
       }
-      if (Stand_alone == 1 || b_Strong >= 2) {
+      if (Stand_alone >= 1 || b_Strong >= 2) {
         b_class <- "B"
       }
       if (b_class == "" && p_class == "") {
