@@ -20,7 +20,7 @@ local_bootstrapped_lr(
 
 \item{feature}{The column name that requires testing for optimizing the thresholds}
 
-\item{direction}{The direction of evidence pathogenic, {Pathogenic or Benig}}
+\item{direction}{The direction of evidence pathogenic (Pathogenic or Benig)}
 
 \item{alpha}{Prior probability}
 
