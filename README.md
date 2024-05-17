@@ -40,6 +40,7 @@ devtools::install_github("liusihan/BayesQuantify")
 
 ## Required Input Data
 The package requires one essential input: a data.frame containing variants classification results, including the variants, ACMG/AMP evidence, variant classification, and tested features.
+
 Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019 dataset have been included in `BayesQuantify`. Here is an example input file：
 
 |#Variation|Assertion|Applied Evidence Codes (Met)|HGNC Gene Symbol|Expert Panel|...|
