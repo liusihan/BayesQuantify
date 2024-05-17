@@ -13,7 +13,7 @@ local_lr(input_data, feature, direction, alpha, minpoints, increment)
 
 \item{feature}{The column name that requires testing for optimizing the thresholds}
 
-\item{direction}{The direction of evidence pathogenic, {Pathogenic or Benign}}
+\item{direction}{The direction of evidence pathogenic (Pathogenic or Benign)}
 
 \item{alpha}{Prior probability}
 
