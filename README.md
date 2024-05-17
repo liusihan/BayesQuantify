@@ -26,7 +26,7 @@ for quantifying the strength of evidence for ACMG/AMP criteria using a
 naive Bayes classifier. The functions included in BayesQuantify consists 
 of six main steps (as shown in Figure 1):
 
-![Figure 1](https://github.com/liusihan/BayesQuantify/blob/master/Figure1.jpeg?raw=true)
+![Figure 1](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1_BayesQuantify.jpeg?raw=true)
 <p align="center"> Figure 1. Schematic overview of BayesQuantify. </p>
 
 ## Installation
@@ -52,7 +52,7 @@ Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019
 
 
 ## Usage
-The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/b5f2c3b737078dfd52350ac3c8fe7dc48d482354/BayesQuantify_1.0.0.pdf).
+The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify_1.0.0.pdf).
 ``` r
 library(BayesQuantify)
 data("ClinGen_dataset")
