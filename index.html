@@ -7,12 +7,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="The guidelines proposed by the American College of Medical Genetics and Genomics (ACMG) and the Association for Molecular Pathology (AMP)have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the Clinical Genome Resource (ClinGen) Sequence Variant Interpretation (SVI) Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4 criteria. However, existing software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking. This package provide users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier.">
 <title>An R package utilized to refine the ACMG/AMP criteria according to the Bayesian framework • BayesQuantify</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R package utilized to refine the ACMG/AMP criteria according to the Bayesian framework">
 <meta property="og:description" content="The guidelines proposed by the American College of Medical Genetics and Genomics (ACMG) and the Association for Molecular Pathology (AMP)have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the Clinical Genome Resource (ClinGen) Sequence Variant Interpretation (SVI) Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4 criteria. However, existing software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking. This package provide users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier.">
+<meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -57,37 +64,129 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="bayesquantify">BayesQuantify<a class="anchor" aria-label="anchor" href="#bayesquantify"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="bayesquantify-">BayesQuantify <a class="anchor" aria-label="anchor" href="#bayesquantify-"></a>
+</h1>
+</div>
 <!-- badges: start -->
 
-<p>The ACMG/AMP guidelines have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the ClinGen Sequence Variant Interpretation Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4. However, there are challenges for clinicians in utilizing the Bayesian Classification Framework, as tools and software for convincingly calculating the positive likelihood ratio are lacking.</p>
-<p>The <code>BayesQuantify</code> R Package provide a comprehensive functions to define the thresholds for each evidence strength level</p>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>The ACMG/AMP guidelines have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the ClinGen Sequence Variant Interpretation Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4. However, existing software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking.</p>
+<p>The <code>BayesQuantify</code> R Package provide users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier. The functions included in BayesQuantify consists of six main steps (as shown in Figure 1):</p>
+<div class="float">
+<img src="https://github.com/liusihan/BayesQuantify/blob/master/Figure1.jpeg?raw=true" alt="Figure 1"><div class="figcaption">Figure 1</div>
+</div>
+<p align="center">
+Figure 1. Schematic overview of BayesQuantify.
+</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install <code>BayesQuantify</code> from CRAN:</p>
+<p>You can install <code>BayesQuantify</code> from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BayesQuantify"</span><span class="op">)</span></span></code></pre></div>
-<p>Or you can install the development version of <code>BayesQuantify</code> from GitHub:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"liusihan/BayesQuantify"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"liusihan/BayesQuantify"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="required-input-data">Required Input Data<a class="anchor" aria-label="anchor" href="#required-input-data"></a>
 </h2>
-<p>This is a basic example which shows you how to calculate the positive likelihood ratio using <code>BayesQuantify</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>The package requires one essential input: a data.frame containing variants classification results, including the variants, ACMG/AMP evidence, variant classification, and tested features. Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019 dataset have been included in <code>BayesQuantify</code>. Here is an example input file：</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+</colgroup>
+<thead><tr class="header">
+<th>#Variation</th>
+<th>Assertion</th>
+<th>Applied Evidence Codes (Met)</th>
+<th>HGNC Gene Symbol</th>
+<th>Expert Panel</th>
+<th>…</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>NM_000277.2:c.1A&gt;G</td>
+<td>Pathogenic</td>
+<td>PS3, PM3, PP4_Moderate, PM2</td>
+<td>PAH</td>
+<td>Phenylketonuria VCEP</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>NM_000314.6:c.209+3A&gt;T</td>
+<td>Uncertain Significance</td>
+<td>PP3</td>
+<td>PTEN</td>
+<td>PTEN VCEP</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>NM_004999.3:c.2836C&gt;T</td>
+<td>Likely Benign</td>
+<td>BS1</td>
+<td>MYO6</td>
+<td>Hearing Loss VCEP</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<p>The full usage of BayesQuantify can be found <a href="https://github.com/liusihan/BayesQuantify/blob/b5f2c3b737078dfd52350ac3c8fe7dc48d482354/BayesQuantify_1.0.0.pdf" class="external-link">here</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BayesQuantify</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"VCI_data"</span><span class="op">)</span></span>
-<span><span class="va">VCI_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_info.html">add_info</a></span><span class="op">(</span><span class="va">VCI_data</span>, <span class="st">"Assertion"</span><span class="op">)</span></span>
-<span><span class="va">VCI_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/VUS_classify.html">VUS_classify</a></span><span class="op">(</span><span class="va">VCI_data</span>, <span class="st">"Assertion"</span>, <span class="st">"Applied Evidence Codes (Met)"</span><span class="op">)</span></span>
-<span><span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="va">VCI_data</span><span class="op">[</span><span class="va">VCI_data</span><span class="op">$</span><span class="va">VUS_class</span> <span class="op">!=</span> <span class="st">"Hot"</span> <span class="op">&amp;</span> <span class="va">VCI_data</span><span class="op">$</span><span class="va">VUS_class</span> <span class="op">!=</span> <span class="st">"Warm"</span> <span class="op">&amp;</span> <span class="va">VCI_data</span><span class="op">$</span><span class="va">VUS_class</span> <span class="op">!=</span> <span class="st">"Tepid"</span> <span class="op">&amp;</span> <span class="va">VCI_data</span><span class="op">$</span><span class="va">VUS_class</span> <span class="op">!=</span> <span class="st">"NA"</span>, <span class="op">]</span></span>
-<span><span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/discrete_cutoff.html">discrete_cutoff</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="st">"Applied Evidence Codes (Met)"</span>, criteria <span class="op">=</span> <span class="st">"PM2"</span><span class="op">)</span></span>
-<span><span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/discrete_cutoff.html">discrete_cutoff</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="st">"Applied Evidence Codes (Met)"</span>, criteria <span class="op">=</span> <span class="st">"PP1"</span><span class="op">)</span></span>
-<span><span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/discrete_cutoff.html">discrete_cutoff</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="st">"Applied Evidence Codes (Met)"</span>, criteria <span class="op">=</span> <span class="st">"PM4"</span><span class="op">)</span></span>
-<span><span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/discrete_cutoff.html">discrete_cutoff</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="st">"Applied Evidence Codes (Met)"</span>, criteria <span class="op">=</span> <span class="st">"PM5"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/LR.html">LR</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="fl">28</span>, <span class="fl">31</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ClinGen_dataset"</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_info.html">add_info</a></span><span class="op">(</span><span class="va">ClinGen_dataset</span>, <span class="st">"Assertion"</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/VUS_classify.html">VUS_classify</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"Assertion"</span>, <span class="st">"Applied Evidence Codes (Met)"</span><span class="op">)</span></span>
+<span><span class="co">#data &lt;- data[data$`Applied Evidence Codes (Met)`!="",]</span></span>
+<span><span class="va">all_evidence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu">str_replace_all</span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">`Applied Evidence Codes (Met)`</span>,<span class="st">" "</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">split_evidence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">all_evidence</span>, <span class="st">","</span><span class="op">)</span></span>
+<span><span class="va">unique_evidence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">split_evidence</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">P_evidence</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^P"</span>, <span class="va">unique_evidence</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">data</span>,<span class="va">VUS_class</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IceCold"</span>,<span class="st">"Cold"</span>,<span class="st">"Cool"</span>,<span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">P_evidence</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">truth_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/discrete_cutoff.html">discrete_cutoff</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="st">"Applied Evidence Codes (Met)"</span>, criteria <span class="op">=</span> <span class="va">i</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">LR_result</span><span class="op">&lt;-</span><span class="fu"><a href="reference/LR.html">LR</a></span><span class="op">(</span><span class="va">truth_set</span>, <span class="fl">28</span>, <span class="fl">72</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">LR_result</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">LR_result</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">LR_result</span><span class="op">&lt;-</span><span class="va">LR_result</span><span class="op">[</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">name_evidence</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">LR_result</span><span class="op">)</span></span>
+<span><span class="va">LR_result</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">LR_result</span>,<span class="va">as.numeric</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">LR_result</span><span class="op">)</span><span class="op">&lt;-</span><span class="va">name_evidence</span></span>
+<span><span class="va">LR_result</span><span class="op">&lt;-</span><span class="va">LR_result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="op">-</span><span class="fl">2</span>,<span class="op">-</span><span class="fl">4</span>,<span class="op">-</span><span class="fl">5</span>,<span class="op">-</span><span class="fl">6</span>,<span class="op">-</span><span class="fl">7</span>,<span class="op">-</span><span class="fl">8</span>,<span class="op">-</span><span class="fl">10</span>,<span class="op">-</span><span class="fl">11</span>,<span class="op">-</span><span class="fl">12</span>,<span class="op">-</span><span class="fl">14</span>,<span class="op">-</span><span class="fl">17</span>,<span class="op">-</span><span class="fl">18</span>,<span class="op">-</span><span class="fl">19</span>,<span class="op">-</span><span class="fl">20</span>,<span class="op">-</span><span class="fl">21</span>,<span class="op">-</span><span class="fl">22</span>,<span class="op">-</span><span class="fl">24</span>,<span class="op">-</span><span class="fl">25</span>,<span class="op">-</span><span class="fl">26</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="va">LR_result</span><span class="op">&lt;-</span><span class="va">LR_result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">6</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="fu"><a href="reference/multi_plot.html">multi_plot</a></span><span class="op">(</span><span class="va">ClinGen_dataset</span>, <span class="st">"Assertion"</span>, <span class="st">"HGNC Gene Symbol"</span><span class="op">)</span></span>
+<span><span class="va">op_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.08</span>, <span class="fl">4.33</span>, <span class="fl">18.70</span>, <span class="fl">350</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/heatmap_LR.html">heatmap_LR</a></span><span class="op">(</span><span class="va">LR_result</span>, <span class="va">op_list</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use BayesQuantify, please cite our paper (thanks!): &gt; Liu S, Feng X, Bu F. BayesQuantify: an R package utilized to refine the ACMG/AMP criteria according to the Bayesian framework. XXX.</p>
+</div>
+<div class="section level2">
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h2>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on GitHub. For questions and other discussion, please contact Sihan Liu (<a href="mailto:liusihan@wchscu.cn" class="email">liusihan@wchscu.cn</a>).</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
