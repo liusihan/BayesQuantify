@@ -5,7 +5,7 @@
 #'
 #' @param input_data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param feature The column name that requires testing for optimizing the thresholds
-#' @param direction The direction of evidence pathogenic,{Pathogenic or Benign}
+#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
 #' @param alpha Prior probability
 #' @param minpoints The number of at least pathogenic and non-pathogenic variants
 #' @param increment Sliding window
@@ -76,7 +76,7 @@ local_lr <- function(input_data, feature, direction,alpha, minpoints, increment)
 #'
 #' @param input_data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param feature The column name that requires testing for optimizing the thresholds
-#' @param direction The direction of evidence pathogenic,{Pathogenic or Benign}
+#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
 #' @param alpha Prior probability
 #' @param bootstrap The number of bootstrapping iterations
 #' @param minpoints The number of at least pathogenic and non-pathogenic variants
