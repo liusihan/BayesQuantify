@@ -52,7 +52,7 @@ Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019
 
 
 ## Usage
-The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify.pdf).
+The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/207dfa884c0ac84b8ed281ece95dee5e1b3a8fb6/man/figures/BayesQuantify.pdf).
 ``` r
 > library(BayesQuantify)
 
