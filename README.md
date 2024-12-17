@@ -52,12 +52,12 @@ Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019
 
 
 ## Usage
-The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify_1.0.0.pdf).
+The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify.pdf).
 ``` r
-library(BayesQuantify)
+> library(BayesQuantify)
 
 ##step 1: Determining theoretical OP
-auto_select_postp(0.1)
+> auto_select_postp(0.1)
   Evidence Strength Odds of pathogenicity Posterior probability of pathogenicity and benignity
 1               PVS                   351                                                0.975
 2                PS      18.7349939951952                                     0.67550020016016
@@ -69,29 +69,31 @@ auto_select_postp(0.1)
 8               BVS   0.00284900284900285                                    0.999683544303797
 
 ##step 2: Variants of US (VUS) subclassification
-data("ClinGen_dataset")
-data <- add_info(ClinGen_dataset, "Assertion")
-data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
-all_evidence <- unlist(str_replace_all(data$`Applied Evidence Codes (Met)`," ", ""))
-split_evidence <- strsplit(all_evidence, ",")
-unique_evidence <- unique(unlist(split_evidence))
-P_evidence<-grep("^P", unique_evidence, value = TRUE)
-library(dplyr)
-truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
-for(i in P_evidence){
-  truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
-}
+> data("ClinGen_dataset")
+> data <- add_info(ClinGen_dataset, "Assertion")
+> data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
+> all_evidence <- unlist(str_replace_all(data$`Applied Evidence Codes (Met)`," ", ""))
+> split_evidence <- strsplit(all_evidence, ",")
+> unique_evidence <- unique(unlist(split_evidence))
+> P_evidence<-grep("^P", unique_evidence, value = TRUE)
+> library(dplyr)
+> truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
+> for(i in P_evidence){
+   truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
+ }
 
-##step3: Calculating LR+
-LR_result<-LR(truth_set, 28, 72)
-rownames(LR_result)<-LR_result[,1]
-LR_result<-LR_result[,-1]
-name_evidence<-rownames(LR_result)
-LR_result<-data.frame(lapply(LR_result,as.numeric))
-rownames(LR_result)<-name_evidence
-multi_plot(ClinGen_dataset, "Assertion", "HGNC Gene Symbol")
-op_list <- c(2.08, 4.33, 18.70, 350)
-heatmap_LR(LR_result, op_list)
+##step3: Calculating LR or lr
+> LR_result<-LR(truth_set, 28, 72)
+> rownames(LR_result)<-LR_result[,1]
+> LR_result<-LR_result[,-1]
+> name_evidence<-rownames(LR_result)
+> LR_result<-data.frame(lapply(LR_result,as.numeric))
+> rownames(LR_result)<-name_evidence
+
+##step 4: Visualization
+> multi_plot(ClinGen_dataset, "Assertion", "HGNC Gene Symbol")
+> op_list <- c(2.08, 4.33, 18.70, 350)
+> heatmap_LR(LR_result, op_list)
 ```
 
 ## Citation
