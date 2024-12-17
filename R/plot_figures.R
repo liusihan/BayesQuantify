@@ -129,6 +129,7 @@ multi_plot <- function(data, classification_col, gene_col, consequence_col=NULL)
 #' Visualize the results of LR+ for each evaluated cutoff
 #'
 #' @param data DataFrame comprising fundamental variant information, evidence labeling, and classification details
+#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
 #' @param op_list A list of odds path corresponding to each level of evidence strength
 #'
 #' @return Figures
@@ -143,37 +144,66 @@ multi_plot <- function(data, classification_col, gene_col, consequence_col=NULL)
 #' @examples
 #' data("LR_result")
 #' op_list <- c(2.08, 4.33, 18.70, 350)
-#' heatmap_LR(LR_result, op_list)
+#' heatmap_LR(LR_result, "Pathogenic", op_list)
 #'
-heatmap_LR <- function(data, op_list) {
+heatmap_LR <- function(data, direction, op_list) {
+  if(direction!="Pathogenic" && direction!="Benign"){
+    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
+  }
   fea_plot <- data[, c(1:7, 13, 14, 12, 15, 16)]
-  p1 <- Heatmap(fea_plot[, c(1:4)], cluster_rows = FALSE, name = "Number of variants", row_names_side = "left", cluster_columns = FALSE, column_names_rot = 45, rect_gp = gpar(col = "black", lwd = 1.5), col = circlize::colorRamp2(unname(quantile(as.vector(t(fea_plot[, c(1:4)])), c(0.05, 0.25, 0.5, 0.75, 0.95))), c("white", "#CBCDE0", "#A4ABD6", "#ACA0D2", "#8076A3"), transparency = 0.2), column_dend_height = unit(2, "cm"), row_names_gp = gpar(fontsize = 10, col = "#1f78b4"), column_names_gp = gpar(fontsize = 10, col = c(rep("#8076A3", 4))), cell_fun = function(j, i, x, y, width, height, fill) {
+  p1 <- Heatmap(fea_plot[, c(1:4)], cluster_rows = FALSE, name = "Number of variants", row_names_side = "left", cluster_columns = FALSE, column_names_rot = 45, rect_gp = gpar(col = "black", lwd = 1.5), col = circlize::colorRamp2(unname(quantile(as.vector(t(fea_plot[, c(1:4)])), c(0.05, 0.25, 0.5, 0.75, 0.95))), c("white", "#CBCDE0", "#A4ABD6", "#ACA0D2", "#8076A3"), transparency = 0.2), column_dend_height = unit(2, "cm"), row_names_gp = gpar(fontsize = 10, col = "black"), column_names_gp = gpar(fontsize = 10, col = c(rep("#8076A3", 4))), cell_fun = function(j, i, x, y, width, height, fill) {
     grid.text(sprintf("%.0f", fea_plot[, c(1:4)][i, j]), x, y, gp = gpar(fontsize = 14))
   })
-  p2 <- Heatmap(fea_plot[, c(5:10)], cluster_rows = FALSE, name = "Evaluation metrics", row_names_side = "left", cluster_columns = FALSE, column_names_rot = 45, rect_gp = gpar(col = "black", lwd = 1.5), col = circlize::colorRamp2(unname(quantile(as.vector(t(fea_plot[, c(5:10)])), c(0.05, 0.25, 0.5, 0.75, 0.95))), c("white", "#eff6e0", "#aec3b0", "#84a98c", "#52796f"), transparency = 0.2), column_dend_height = unit(2, "cm"), row_names_gp = gpar(fontsize = 10, col = "#1f78b4"), column_names_gp = gpar(fontsize = 10, col = c(rep("#52796f", 6))), cell_fun = function(j, i, x, y, width, height, fill) {
+  p2 <- Heatmap(fea_plot[, c(5:10)], cluster_rows = FALSE, name = "Evaluation metrics", row_names_side = "left", cluster_columns = FALSE, column_names_rot = 45, rect_gp = gpar(col = "black", lwd = 1.5), col = circlize::colorRamp2(unname(quantile(as.vector(t(fea_plot[, c(5:10)])), c(0.05, 0.25, 0.5, 0.75, 0.95))), c("white", "#aed4e5", "#81b5d5", "#5795c7", "#3371b3"), transparency = 0.2), column_dend_height = unit(2, "cm"), row_names_gp = gpar(fontsize = 10, col = "black"), column_names_gp = gpar(fontsize = 10, col = c(rep("#3371b3", 6))), cell_fun = function(j, i, x, y, width, height, fill) {
     grid.text(sprintf("%.3f", fea_plot[, c(5:10)][i, j]), x, y, gp = gpar(fontsize = 14))
   })
   value <- rep(0, nrow(fea_plot) * 2)
   cols <- structure(rep("#fef9ef", nrow(fea_plot) * 2), names = c(fea_plot[, c(11)], fea_plot[, c(12)]))
-  strength_cols <- structure(c("#e5989b", "#b5838d", "#bf4342", "#780000"), names = c(1, 2, 3, 4))
-  for (i in 1:length(fea_plot[, 11])) {
-    for (k in 1:length(op_list)) {
-      if (fea_plot[, 11][i] >= op_list[k]) {
-        value[i] <- op_list[k]
-        cols[i] <- strength_cols[k]
+  if(direction=="Pathogenic"){
+    strength_cols <- structure(c("#e5989b", "#b5838d", "#bf4342", "#780000"), names = c(1, 2, 3, 4))
+    anno_cols <- structure(c("#fef9ef", "#e5989b", "#b5838d", "#bf4342", "#780000"), names = c(0, op_list))
+  }
+  if(direction=="Benign"){
+    strength_cols <- structure(c("#eff6e0", "#aec3b0", "#84a98c", "#52796f"), names = c(1, 2, 3, 4))
+    anno_cols <- structure(c("#fef9ef", "#eff6e0", "#aec3b0", "#84a98c", "#52796f"), names = c(0, op_list))
+  }
+  if(direction=="Pathogenic"){
+    for (i in 1:length(fea_plot[, 11])) {
+      for (k in 1:length(op_list)) {
+        if (fea_plot[, 11][i] >= op_list[k]) {
+          value[i] <- op_list[k]
+          cols[i] <- strength_cols[k]
+        }
+      }
+    }
+    for (i in 1:length(fea_plot[, 12])) {
+      for (k in 1:length(op_list)) {
+        if (fea_plot[, 12][i] >= op_list[k]) {
+          value[i + nrow(fea_plot)] <- op_list[k]
+          cols[i + nrow(fea_plot)] <- strength_cols[k]
+        }
       }
     }
   }
-  for (i in 1:length(fea_plot[, 12])) {
-    for (k in 1:length(op_list)) {
-      if (fea_plot[, 12][i] >= op_list[k]) {
-        value[i + nrow(fea_plot)] <- op_list[k]
-        cols[i + nrow(fea_plot)] <- strength_cols[k]
+  if(direction=="Benign"){
+    for (i in 1:length(fea_plot[, 11])) {
+      for (k in 1:length(op_list)) {
+        if (fea_plot[, 11][i] <= op_list[k]) {
+          value[i] <- op_list[k]
+          cols[i] <- strength_cols[k]
+        }
+      }
+    }
+    for (i in 1:length(fea_plot[, 12])) {
+      for (k in 1:length(op_list)) {
+        if (fea_plot[, 12][i] <= op_list[k]) {
+          value[i + nrow(fea_plot)] <- op_list[k]
+          cols[i + nrow(fea_plot)] <- strength_cols[k]
+        }
       }
     }
   }
   strength <- factor(value[(nrow(fea_plot) + 1):(nrow(fea_plot) * 2)])
-  anno_cols <- structure(c("#fef9ef", "#e5989b", "#b5838d", "#bf4342", "#780000"), names = c(0, op_list))
   cols_list <- anno_cols[which(names(anno_cols) %in% levels(strength))]
   anno_lable <- c("NA", "Supporting", "Moderate", "Strong", "Very Strong")
   p3 <- Heatmap(fea_plot[, c(11:12)], cluster_rows = FALSE, name = "Strength of evidence", row_names_side = "left", column_names_rot = 45, cluster_columns = FALSE, rect_gp = gpar(col = "black", lwd = 1.5), col = cols, column_dend_height = unit(2, "cm"), row_names_gp = gpar(fontsize = 10, col = "#1f78b4"), column_names_gp = gpar(fontsize = 10, col = "#780000"), cell_fun = function(j, i, x, y, width, height, fill) {
@@ -187,6 +217,7 @@ heatmap_LR <- function(data, op_list) {
 #'
 #' @param data DataFrame comprising fundamental variant information, evidence labeling, and classification details
 #' @param postp_list A list of posterior probability corresponding to each level of evidence strength
+#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
 #' @import ggplot2
 #' @importFrom utils globalVariables
 #' @return Figures
@@ -198,18 +229,35 @@ heatmap_LR <- function(data, op_list) {
 #' # local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
 #' postp_list <- c(0.100, 0.211, 0.608, 0.981)
 #' # lr_CI_result <- lr_CI(30, "test_dir")
-#' plot_lr(lr_CI_result, postp_list)
+#' plot_lr(lr_CI_result, "Pathogenic", postp_list)
 #'
-plot_lr <- function(data, postp_list) {
-  Figurelr <- ggplot() +
-    geom_line(data = data, mapping = aes(x = test_cutoff, y = Posterior), colour = "black", size = 1) +
-    geom_line(data = data, mapping = aes(x = test_cutoff, y = Posterior1), colour = "grey", size = 1) +
-    theme_classic() +
-    theme(panel.border = element_rect(fill = NA, color = "black", size = 1, linetype = "solid")) +
-    geom_hline(yintercept = postp_list[4], colour = "red", linetype = 1, size = 1) +
-    geom_hline(yintercept = postp_list[3], colour = "red", linetype = 2, size = 1) +
-    geom_hline(yintercept = postp_list[2], colour = "red", linetype = 3, size = 1) +
-    geom_hline(yintercept = postp_list[1], colour = "red", linetype = 4, size = 1) +
-    ylab("Posterior probability")
+plot_lr <- function(data, direction,postp_list) {
+  if(direction!="Pathogenic" && direction!="Benign"){
+    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
+  }
+  if(direction=="Pathogenic"){
+    Figurelr <- ggplot() +
+      geom_line(data = data, mapping = aes(x = test_cutoff, y = Posterior), colour = "black", size = 1) +
+      geom_line(data = data, mapping = aes(x = test_cutoff, y = Posterior1), colour = "grey", size = 1) +
+      theme_classic() +
+      theme(panel.border = element_rect(fill = NA, color = "black", size = 1, linetype = "solid")) +
+      geom_hline(yintercept = postp_list[4], colour = "red", linetype = 1, size = 1) +
+      geom_hline(yintercept = postp_list[3], colour = "red", linetype = 2, size = 1) +
+      geom_hline(yintercept = postp_list[2], colour = "red", linetype = 3, size = 1) +
+      geom_hline(yintercept = postp_list[1], colour = "red", linetype = 4, size = 1) +
+      ylab("Posterior probability")
+  }
+  if(direction=="Benign"){
+    Figurelr <- ggplot() +
+      geom_line(data = data, mapping = aes(x = test_cutoff, y = Posterior), colour = "black", size = 1) +
+      geom_line(data = data, mapping = aes(x = test_cutoff, y = Posterior1), colour = "grey", size = 1) +
+      theme_classic() +
+      theme(panel.border = element_rect(fill = NA, color = "black", size = 1, linetype = "solid")) +
+      geom_hline(yintercept = postp_list[4], colour = "#0971BA", linetype = 1, size = 1) +
+      geom_hline(yintercept = postp_list[3], colour = "#0971BA", linetype = 2, size = 1) +
+      geom_hline(yintercept = postp_list[2], colour = "#0971BA", linetype = 3, size = 1) +
+      geom_hline(yintercept = postp_list[1], colour = "#0971BA", linetype = 4, size = 1) +
+      ylab("Posterior probability")
+  }
   return(Figurelr)
 }

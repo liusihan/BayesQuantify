@@ -4,10 +4,12 @@
 \alias{plot_lr}
 \title{Generate plots depicting the results of lr+ for each tested cutoff}
 \usage{
-plot_lr(data, postp_list)
+plot_lr(data, direction, postp_list)
 }
 \arguments{
 \item{data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
+
+\item{direction}{The direction of evidence pathogenic (Pathogenic or Benign)}
 
 \item{postp_list}{A list of posterior probability corresponding to each level of evidence strength}
 }
@@ -23,6 +25,6 @@ data("lr_CI_result")
 # local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
 postp_list <- c(0.100, 0.211, 0.608, 0.981)
 # lr_CI_result <- lr_CI(30, "test_dir")
-plot_lr(lr_CI_result, postp_list)
+plot_lr(lr_CI_result, "Pathogenic", postp_list)
 
 }

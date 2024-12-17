@@ -119,6 +119,7 @@ local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstra
 #'
 #' @param postp_list A list of posterior probability corresponding to each level of evidence strength
 #' @param discountonesided The one-sided confidence intervals
+#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
 #' @param bootstrap The number of bootstrapping iterations
 #' @param dir The directory containing the results of bootstrapping
 #'
@@ -131,12 +132,15 @@ local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstra
 #' \dontrun{
 #' data("ClinVar_2019_dataset")
 #' data <- add_info(ClinVar_2019_dataset, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+#' local_bootstrapped_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 10000, 100, 0.01, "test_dir")
 #' postp_list <- c(0.100, 0.211, 0.608, 0.981)
-#' get_lr_threshold(postp_list, 0.05, 10000, "test_dir")
+#' get_lr_threshold(postp_list, "Pathogenic",0.05, 10000, "test_dir")
 #' }
 #'
-get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
+get_lr_threshold <- function(postp_list, direction, discountonesided, bootstrap, dir) {
+  if(direction!="Pathogenic" && direction!="Benign"){
+    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
+  }
   thresh <- as.data.frame(matrix(nrow = bootstrap, ncol = 4))
   DiscountedThreshold <- c(0, 0, 0, 0)
   if (!dir.exists(dir)) {
@@ -147,13 +151,30 @@ get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
     for (i in c(1:bootstrap)) {
       input <- read.table(paste("bootstrap_", i, ".txt", sep = ""), sep = "\t", header = T)
       for (j in c(1:length(postp_list))) {
-        ind <- min(which(input$post_p >= postp_list[j]))
-        if (ind == 1) {
-          thresh[i, j] <- input$thrs[2]
-        } else if (ind > 1) {
-          thresh[i, j] <- input$thrs[ind]
-        } else {
-          (thresh[i, j] <- NA)
+        valid_thrs <- input$thrs[input$post_p > postp_list[j]]
+        thresh[i, j] <- NA
+        while (length(valid_thrs) > 0) {
+          if(direction=="Pathogenic"){
+            candidate_min_thrs <- min(valid_thrs)
+            if (all(input$post_p[input$thrs >= candidate_min_thrs] > postp_list[j])) {
+              thresh[i, j] <- candidate_min_thrs
+              break
+            } else{
+              valid_thrs <- valid_thrs[valid_thrs != candidate_min_thrs]
+            }
+          }
+          else if(direction=="Benign"){
+            candidate_max_thrs <- max(valid_thrs)
+            if (all(input$post_p[input$thrs <= candidate_max_thrs] > postp_list[j])) {
+              thresh[i, j] <- candidate_max_thrs
+              break
+            } else{
+              valid_thrs <- valid_thrs[valid_thrs != candidate_max_thrs]
+            }
+          }
+          if (min(which(input$post_p >= postp_list[j])) == 1) {
+            thresh[i, j] <- input$thrs[2]
+          }
         }
       }
     }
@@ -187,7 +208,7 @@ get_lr_threshold <- function(postp_list, discountonesided, bootstrap, dir) {
 #' \dontrun{
 #' data("ClinVar_2019_dataset")
 #' data <- add_info(ClinVar_2019_dataset, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score", 0.0441, 10000, 100, 0.01, "test_dir")
+#' local_bootstrapped_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 10000, 100, 0.01, "test_dir")
 #' lr_CI_result <- lr_CI(10000, "test_dir")
 #' }
 #'

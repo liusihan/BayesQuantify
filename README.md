@@ -55,10 +55,23 @@ Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019
 The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify_1.0.0.pdf).
 ``` r
 library(BayesQuantify)
+
+##step 1: Determining theoretical OP
+auto_select_postp(0.1)
+  Evidence Strength Odds of pathogenicity Posterior probability of pathogenicity and benignity
+1               PVS                   351                                                0.975
+2                PS      18.7349939951952                                     0.67550020016016
+3                PM      4.32839392791312                                    0.324749849931156
+4                PP      2.08047925438182                                    0.187760764369383
+5                BP     0.480658481882885                                    0.949301150041276
+6                BM     0.231032576205959                                    0.974972184931784
+7                BS    0.0533760512683624                                    0.994104293142569
+8               BVS   0.00284900284900285                                    0.999683544303797
+
+##step 2: Variants of US (VUS) subclassification
 data("ClinGen_dataset")
 data <- add_info(ClinGen_dataset, "Assertion")
 data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
-#data <- data[data$`Applied Evidence Codes (Met)`!="",]
 all_evidence <- unlist(str_replace_all(data$`Applied Evidence Codes (Met)`," ", ""))
 split_evidence <- strsplit(all_evidence, ",")
 unique_evidence <- unique(unlist(split_evidence))
@@ -68,14 +81,14 @@ truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
 for(i in P_evidence){
   truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
 }
+
+##step3: Calculating LR+
 LR_result<-LR(truth_set, 28, 72)
 rownames(LR_result)<-LR_result[,1]
 LR_result<-LR_result[,-1]
 name_evidence<-rownames(LR_result)
 LR_result<-data.frame(lapply(LR_result,as.numeric))
 rownames(LR_result)<-name_evidence
-LR_result<-LR_result[c(-1,-2,-4,-5,-6,-7,-8,-10,-11,-12,-14,-17,-18,-19,-20,-21,-22,-24,-25,-26),]
-LR_result<-LR_result[c(2,4,6,1,3,5),]
 multi_plot(ClinGen_dataset, "Assertion", "HGNC Gene Symbol")
 op_list <- c(2.08, 4.33, 18.70, 350)
 heatmap_LR(LR_result, op_list)

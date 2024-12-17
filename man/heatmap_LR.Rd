@@ -4,10 +4,12 @@
 \alias{heatmap_LR}
 \title{Visualize the results of LR+ for each evaluated cutoff}
 \usage{
-heatmap_LR(data, op_list)
+heatmap_LR(data, direction, op_list)
 }
 \arguments{
 \item{data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
+
+\item{direction}{The direction of evidence pathogenic (Pathogenic or Benign)}
 
 \item{op_list}{A list of odds path corresponding to each level of evidence strength}
 }
@@ -20,6 +22,6 @@ Visualize the results of LR+ for each evaluated cutoff
 \examples{
 data("LR_result")
 op_list <- c(2.08, 4.33, 18.70, 350)
-heatmap_LR(LR_result, op_list)
+heatmap_LR(LR_result, "Pathogenic", op_list)
 
 }
