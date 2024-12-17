@@ -135,11 +135,11 @@ Figure 1. Schematic overview of BayesQuantify.
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>The full usage of BayesQuantify can be found <a href="https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify_1.0.0.pdf" class="external-link">here</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(BayesQuantify)</span>
+<p>The full usage of BayesQuantify can be found <a href="https://github.com/liusihan/BayesQuantify/blob/642451ee658b70d98c3a5627d266781b93678deb/man/figures/BayesQuantify.pdf" class="external-link">here</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(BayesQuantify)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="do">##step 1: Determining theoretical OP</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="fu">auto_select_postp</span>(<span class="fl">0.1</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">auto_select_postp</span>(<span class="fl">0.1</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  Evidence Strength Odds of pathogenicity Posterior probability of pathogenicity and benignity</span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="dv">1</span>               PVS                   <span class="dv">351</span>                                                <span class="fl">0.975</span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="dv">2</span>                PS      <span class="fl">18.7349939951952</span>                                     <span class="fl">0.67550020016016</span></span>
@@ -151,29 +151,31 @@ Figure 1. Schematic overview of BayesQuantify.
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="dv">8</span>               BVS   <span class="fl">0.00284900284900285</span>                                    <span class="fl">0.999683544303797</span></span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a></span>
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="do">##step 2: Variants of US (VUS) subclassification</span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"ClinGen_dataset"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">add_info</span>(ClinGen_dataset, <span class="st">"Assertion"</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">VUS_classify</span>(data, <span class="st">"Assertion"</span>, <span class="st">"Applied Evidence Codes (Met)"</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>all_evidence <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">str_replace_all</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">Applied Evidence Codes (Met)</span><span class="st">`</span>,<span class="st">" "</span>, <span class="st">""</span>))</span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>split_evidence <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(all_evidence, <span class="st">","</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>unique_evidence <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">unlist</span>(split_evidence))</span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>P_evidence<span class="ot">&lt;-</span><span class="fu">grep</span>(<span class="st">"^P"</span>, unique_evidence, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>truth_set <span class="ot">&lt;-</span> <span class="fu">filter</span>(data,VUS_class <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IceCold"</span>,<span class="st">"Cold"</span>,<span class="st">"Cool"</span>,<span class="st">""</span>))</span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> P_evidence){</span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>  truth_set <span class="ot">&lt;-</span> <span class="fu">discrete_cutoff</span>(truth_set, <span class="st">"Applied Evidence Codes (Met)"</span>, <span class="at">criteria =</span> i)</span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>}</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">data</span>(<span class="st">"ClinGen_dataset"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="sc">&gt;</span> data <span class="ot">&lt;-</span> <span class="fu">add_info</span>(ClinGen_dataset, <span class="st">"Assertion"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="sc">&gt;</span> data <span class="ot">&lt;-</span> <span class="fu">VUS_classify</span>(data, <span class="st">"Assertion"</span>, <span class="st">"Applied Evidence Codes (Met)"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="sc">&gt;</span> all_evidence <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">str_replace_all</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">Applied Evidence Codes (Met)</span><span class="st">`</span>,<span class="st">" "</span>, <span class="st">""</span>))</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="sc">&gt;</span> split_evidence <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(all_evidence, <span class="st">","</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="sc">&gt;</span> unique_evidence <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">unlist</span>(split_evidence))</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="sc">&gt;</span> P_evidence<span class="ot">&lt;-</span><span class="fu">grep</span>(<span class="st">"^P"</span>, unique_evidence, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(dplyr)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="sc">&gt;</span> truth_set <span class="ot">&lt;-</span> <span class="fu">filter</span>(data,VUS_class <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IceCold"</span>,<span class="st">"Cold"</span>,<span class="st">"Cool"</span>,<span class="st">""</span>))</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span>(i <span class="cf">in</span> P_evidence){</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>   truth_set <span class="ot">&lt;-</span> <span class="fu">discrete_cutoff</span>(truth_set, <span class="st">"Applied Evidence Codes (Met)"</span>, <span class="at">criteria =</span> i)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a> }</span>
 <span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="do">##step3: Calculating LR+</span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>LR_result<span class="ot">&lt;-</span><span class="fu">LR</span>(truth_set, <span class="dv">28</span>, <span class="dv">72</span>)</span>
-<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="fu">rownames</span>(LR_result)<span class="ot">&lt;-</span>LR_result[,<span class="dv">1</span>]</span>
-<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>LR_result<span class="ot">&lt;-</span>LR_result[,<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>name_evidence<span class="ot">&lt;-</span><span class="fu">rownames</span>(LR_result)</span>
-<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>LR_result<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">lapply</span>(LR_result,as.numeric))</span>
-<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="fu">rownames</span>(LR_result)<span class="ot">&lt;-</span>name_evidence</span>
-<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="fu">multi_plot</span>(ClinGen_dataset, <span class="st">"Assertion"</span>, <span class="st">"HGNC Gene Symbol"</span>)</span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a>op_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.08</span>, <span class="fl">4.33</span>, <span class="fl">18.70</span>, <span class="dv">350</span>)</span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="fu">heatmap_LR</span>(LR_result, op_list)</span></code></pre></div>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="do">##step3: Calculating LR or lr</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="sc">&gt;</span> LR_result<span class="ot">&lt;-</span><span class="fu">LR</span>(truth_set, <span class="dv">28</span>, <span class="dv">72</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">rownames</span>(LR_result)<span class="ot">&lt;-</span>LR_result[,<span class="dv">1</span>]</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="sc">&gt;</span> LR_result<span class="ot">&lt;-</span>LR_result[,<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="sc">&gt;</span> name_evidence<span class="ot">&lt;-</span><span class="fu">rownames</span>(LR_result)</span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="sc">&gt;</span> LR_result<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">lapply</span>(LR_result,as.numeric))</span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">rownames</span>(LR_result)<span class="ot">&lt;-</span>name_evidence</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="do">##step 4: Visualization</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">multi_plot</span>(ClinGen_dataset, <span class="st">"Assertion"</span>, <span class="st">"HGNC Gene Symbol"</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="sc">&gt;</span> op_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.08</span>, <span class="fl">4.33</span>, <span class="fl">18.70</span>, <span class="dv">350</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">heatmap_LR</span>(LR_result, op_list)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
