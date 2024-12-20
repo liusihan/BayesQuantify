@@ -257,7 +257,7 @@ plot_lr <- function(data, direction,postp_list) {
       geom_hline(yintercept = postp_list[3], colour = "#0971BA", linetype = 2, size = 1) +
       geom_hline(yintercept = postp_list[2], colour = "#0971BA", linetype = 3, size = 1) +
       geom_hline(yintercept = postp_list[1], colour = "#0971BA", linetype = 4, size = 1) +
-      ylab("Posterior probability")
+      ylab("Posterior probability")+ylim(0.9,1)
   }
   return(Figurelr)
 }

@@ -4,18 +4,14 @@
 \alias{get_lr_threshold}
 \title{Establish the thresholds for each level of evidence strength}
 \usage{
-get_lr_threshold(postp_list, direction, discountonesided, bootstrap, dir)
+get_lr_threshold(data, postp_list, direction)
 }
 \arguments{
+\item{data}{The results of bootstrapping}
+
 \item{postp_list}{A list of posterior probability corresponding to each level of evidence strength}
 
 \item{direction}{The direction of evidence pathogenic (Pathogenic or Benign)}
-
-\item{discountonesided}{The one-sided confidence intervals}
-
-\item{bootstrap}{The number of bootstrapping iterations}
-
-\item{dir}{The directory containing the results of bootstrapping}
 }
 \value{
 A list of optimized thresholds
@@ -29,7 +25,8 @@ data("ClinVar_2019_dataset")
 data <- add_info(ClinVar_2019_dataset, "clnsig")
 local_bootstrapped_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 10000, 100, 0.01, "test_dir")
 postp_list <- c(0.100, 0.211, 0.608, 0.981)
-get_lr_threshold(postp_list, "Pathogenic",0.05, 10000, "test_dir")
+lr_CI_result <- lr_CI(10000, "test_dir")
+get_lr_threshold(lr_CI_result, postp_list, "Pathogenic")
 }
 
 }

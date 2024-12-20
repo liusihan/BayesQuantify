@@ -115,83 +115,6 @@ local_bootstrapped_lr <- function(input_data, feature, direction,alpha, bootstra
   setwd(previousWorkPath)
 }
 
-#' Establish the thresholds for each level of evidence strength
-#'
-#' @param postp_list A list of posterior probability corresponding to each level of evidence strength
-#' @param discountonesided The one-sided confidence intervals
-#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
-#' @param bootstrap The number of bootstrapping iterations
-#' @param dir The directory containing the results of bootstrapping
-#'
-#' @return A list of optimized thresholds
-#' @importFrom utils read.table
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' data("ClinVar_2019_dataset")
-#' data <- add_info(ClinVar_2019_dataset, "clnsig")
-#' local_bootstrapped_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 10000, 100, 0.01, "test_dir")
-#' postp_list <- c(0.100, 0.211, 0.608, 0.981)
-#' get_lr_threshold(postp_list, "Pathogenic",0.05, 10000, "test_dir")
-#' }
-#'
-get_lr_threshold <- function(postp_list, direction, discountonesided, bootstrap, dir) {
-  if(direction!="Pathogenic" && direction!="Benign"){
-    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
-  }
-  thresh <- as.data.frame(matrix(nrow = bootstrap, ncol = 4))
-  DiscountedThreshold <- c(0, 0, 0, 0)
-  if (!dir.exists(dir)) {
-    return(message("Error: The input directory does not exist!"))
-  } else {
-    previousWorkPath <- getwd()
-    WorkPath <- setwd(dir)
-    for (i in c(1:bootstrap)) {
-      input <- read.table(paste("bootstrap_", i, ".txt", sep = ""), sep = "\t", header = T)
-      for (j in c(1:length(postp_list))) {
-        valid_thrs <- input$thrs[input$post_p > postp_list[j]]
-        thresh[i, j] <- NA
-        while (length(valid_thrs) > 0) {
-          if(direction=="Pathogenic"){
-            candidate_min_thrs <- min(valid_thrs)
-            if (all(input$post_p[input$thrs >= candidate_min_thrs] > postp_list[j])) {
-              thresh[i, j] <- candidate_min_thrs
-              break
-            } else{
-              valid_thrs <- valid_thrs[valid_thrs != candidate_min_thrs]
-            }
-          }
-          else if(direction=="Benign"){
-            candidate_max_thrs <- max(valid_thrs)
-            if (all(input$post_p[input$thrs <= candidate_max_thrs] > postp_list[j])) {
-              thresh[i, j] <- candidate_max_thrs
-              break
-            } else{
-              valid_thrs <- valid_thrs[valid_thrs != candidate_max_thrs]
-            }
-          }
-          if (min(which(input$post_p >= postp_list[j])) == 1) {
-            thresh[i, j] <- input$thrs[2]
-          }
-        }
-      }
-    }
-    for (j in c(1:length(postp_list))) {
-      invalids <- sum(is.na(thresh[, j]))
-      if (invalids > (discountonesided * bootstrap)) {
-        DiscountedThreshold[j] <- NA
-      } else {
-        t <- sort(thresh[which(!is.na(thresh[, j])), j], decreasing = TRUE)
-        DiscountedThreshold[j] <- t[floor(discountonesided * (bootstrap - invalids)) + 1]
-      }
-    }
-    setwd(previousWorkPath)
-    return(DiscountedThreshold)
-  }
-}
-
 #' Merging the results from bootstrap
 #'
 #' @param bootstrap The number of bootstrapping iterations
@@ -230,10 +153,73 @@ lr_CI <- function(bootstrap, dir) {
     output[, 1] <- postp_matrix[, 1]
     output[, 2] <- postp_matrix[, 2]
     for (j in 1:nrow(postp_matrix)) {
-      a <- t.test(postp_matrix[j, c(3:ncol(postp_matrix))])
-      output[j, 3] <- a$conf.int[1]
+      if(all(na.omit(postp_matrix[j, c(3:ncol(postp_matrix))])) == postp_matrix[j, 2]){output[j, 3] <- postp_matrix[j, 2]}
+      else{
+        a <- t.test(postp_matrix[j, c(3:ncol(postp_matrix))])
+        output[j, 3] <- a$conf.int[1]
+      }
     }
     setwd(previousWorkPath)
     return(output)
+  }
+}
+
+#' Establish the thresholds for each level of evidence strength
+#'
+#' @param data The results of bootstrapping
+#' @param postp_list A list of posterior probability corresponding to each level of evidence strength
+#' @param direction The direction of evidence pathogenic (Pathogenic or Benign)
+#'
+#' @return A list of optimized thresholds
+#' @importFrom utils read.table
+#' @importFrom stats na.omit
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data("ClinVar_2019_dataset")
+#' data <- add_info(ClinVar_2019_dataset, "clnsig")
+#' local_bootstrapped_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 10000, 100, 0.01, "test_dir")
+#' postp_list <- c(0.100, 0.211, 0.608, 0.981)
+#' lr_CI_result <- lr_CI(10000, "test_dir")
+#' get_lr_threshold(lr_CI_result, postp_list, "Pathogenic")
+#' }
+#'
+get_lr_threshold <- function(data, postp_list, direction) {
+  if(direction!="Pathogenic" && direction!="Benign"){
+    return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
+  }
+  thresh <- c(0, 0, 0, 0)
+  if (!exists("data")) {
+    return(message("Error: The input data does not exist!"))
+  } else {
+    data<-na.omit(data)
+    for (j in c(1:length(postp_list))) {
+      valid_thrs <- data$test_cutoff[data$Posterior1 > postp_list[j]]
+      thresh[j] <- NA
+      while (length(valid_thrs) > 0) {
+        if(direction=="Pathogenic"){
+          candidate_min_thrs <- min(valid_thrs)
+          if (all(data$Posterior1[data$test_cutoff >= candidate_min_thrs] > postp_list[j])) {
+            thresh[j] <- candidate_min_thrs
+            break
+          } else{
+            valid_thrs <- valid_thrs[valid_thrs != candidate_min_thrs]
+          }
+        }
+        else if(direction=="Benign"){
+          candidate_max_thrs <- max(valid_thrs)
+          if (all(data$Posterior1[data$test_cutoff <= candidate_max_thrs] > postp_list[j])) {
+            thresh[j] <- candidate_max_thrs
+            if(candidate_max_thrs==0){thresh[j] <- NA}
+            break
+          } else{
+            valid_thrs <- valid_thrs[valid_thrs != candidate_max_thrs]
+          }
+        }
+      }
+    }
+    return(thresh)
   }
 }
