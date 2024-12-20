@@ -98,7 +98,7 @@ The full usage of BayesQuantify can be found [here](https://github.com/liusihan/
 
 ## Citation
 If you use BayesQuantify, please cite our paper (thanks!):
-> Liu S, Feng X, Bu F. BayesQuantify: an R package utilized to refine the ACMG/AMP criteria according to the Bayesian framework. XXX.
+> Liu S, Feng X, Bu F. BayesQuantify: an R package utilized to refine the ACMG/AMP criteria according to the Bayesian framework[J]. medRxiv, 2024: 2024.09. 08.24313284.
 
 
 ## Getting help
