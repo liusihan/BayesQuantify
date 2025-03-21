@@ -220,6 +220,14 @@ get_lr_threshold <- function(data, postp_list, direction) {
         }
       }
     }
+    if(!is.na(thresh[1]))
+    {
+      if(thresh[1]==min(data$test_cutoff)){thresh[1] <- NA}
+    }
+    if(!is.na(thresh[4]))
+    {
+      if(thresh[4]==max(data$test_cutoff)){thresh[4] <- NA}
+    }
     return(thresh)
   }
 }

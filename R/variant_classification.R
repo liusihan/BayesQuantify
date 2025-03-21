@@ -27,11 +27,11 @@ ACMG_Classification <- function(data, evidence_col) {
       p_Strong <- str_count(string = p_evidence, pattern = "_Strong") + str_count(string = p_evidence, pattern = "(PS[0-9][^_])|(PS[0-9]$)")
       p_Moderate <- str_count(string = p_evidence, pattern = "_Moderate") + str_count(string = p_evidence, pattern = "(PM[0-9][^_])|(PM[0-9]$)")
       p_Supporting <- str_count(string = p_evidence, pattern = "_Supporting") + str_count(string = p_evidence, pattern = "(PP[0-9][^_])|(PP[0-9]$)")
-      Stand_alone <- str_count(string = b_evidence, pattern = "BA1[^_]|BA1$")
+      Stand_alone <- str_count(string = b_evidence, pattern = "BA1[^_]|BA1$") + str_count(string = b_evidence, pattern = "_Stand Alone")
       b_Strong <- str_count(string = b_evidence, pattern = "_Strong") + str_count(string = b_evidence, pattern = "(BS[0-9][^_])|(BS[0-9]$)")
       b_Moderate <- str_count(string = b_evidence, pattern = "_Moderate")
       b_Supporting <- str_count(string = b_evidence, pattern = "_Supporting") + str_count(string = b_evidence, pattern = "(BP[0-9][^_])|(BP[0-9]$)")
-      PVS1 <- str_count(string = p_evidence, pattern = "PVS1[\\^_]")
+      PVS1 <- str_count(string = p_evidence, pattern = "PVS1[^_]|PVS1$")
       PM2 <- str_count(string = p_evidence, pattern = "PM2_Supporting")
       p_class <- ""
       b_class <- ""
@@ -126,13 +126,13 @@ BCF <- function(data, evidence_col, prior_p, op_vs) {
       p_Strong <- str_count(string = p_evidence, pattern = "_Strong") + str_count(string = p_evidence, pattern = "(PS[0-9][^_])|(PS[0-9]$)")
       p_Moderate <- str_count(string = p_evidence, pattern = "_Moderate") + str_count(string = p_evidence, pattern = "(PM[0-9][^_])|(PM[0-9]$)")
       p_Supporting <- str_count(string = p_evidence, pattern = "_Supporting") + str_count(string = p_evidence, pattern = "(PP[0-9][^_])|(PP[0-9]$)")
-      Stand_alone <- str_count(string = b_evidence, pattern = "BA1[^_]|BA1$")
+      Stand_alone <- str_count(string = b_evidence, pattern = "BA1[^_]|BA1$")+ str_count(string = b_evidence, pattern = "_Stand Alone")
       b_VeryStrong <- str_count(string = b_evidence, pattern = "_Very Strong")
       b_Strong <- str_count(string = b_evidence, pattern = "_Strong") + str_count(string = b_evidence, pattern = "(BS[0-9][^_])|(BS[0-9]$)")
       b_Moderate <- str_count(string = b_evidence, pattern = "_Moderate")
       b_Supporting <- str_count(string = b_evidence, pattern = "_Supporting") + str_count(string = b_evidence, pattern = "(BP[0-9][^_])|(BP[0-9]$)")
       op <- op_vs^(p_Supporting / 8 + p_Moderate / 4 + p_Strong / 2 + p_VeryStrong / 1 - b_Supporting / 8 - b_Moderate / 4 - b_Strong / 2 - b_VeryStrong / 1)
-      post_p <- (op * prior_p) / ((op - 1) * prior_p + 1)
+      post_p <- round((op * prior_p) / ((op - 1) * prior_p + 1),3)
       data$BCF_postp[k] <- post_p
       if (post_p < 0.001) {
         data$BCF_classification[k] <- "B"
@@ -182,7 +182,7 @@ Point_Classification <- function(data, evidence_col) {
       p_Strong <- str_count(string = p_evidence, pattern = "_Strong") + str_count(string = p_evidence, pattern = "(PS[0-9][^_])|(PS[0-9]$)")
       p_Moderate <- str_count(string = p_evidence, pattern = "_Moderate") + str_count(string = p_evidence, pattern = "(PM[0-9][^_])|(PM[0-9]$)")
       p_Supporting <- str_count(string = p_evidence, pattern = "_Supporting") + str_count(string = p_evidence, pattern = "(PP[0-9][^_])|(PP[0-9]$)")
-      Stand_alone <- str_count(string = b_evidence, pattern = "BA1[^_]|BA1$")
+      Stand_alone <- str_count(string = b_evidence, pattern = "BA1[^_]|BA1$")+ str_count(string = b_evidence, pattern = "_Stand Alone")
       b_VeryStrong <- str_count(string = b_evidence, pattern = "_Very Strong")
       b_Strong <- str_count(string = b_evidence, pattern = "_Strong") + str_count(string = b_evidence, pattern = "(BS[0-9][^_])|(BS[0-9]$)")
       b_Moderate <- str_count(string = b_evidence, pattern = "_Moderate")
