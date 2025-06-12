@@ -151,6 +151,7 @@ heatmap_LR <- function(data, direction, op_list) {
     return(message("Error,the direction of evidence pathogenic must be Pathogenic or Benign"))
   }
   fea_plot <- data[, c(1:7, 13, 14, 12, 15, 16)]
+  if(direction=="Benign"){fea_plot <- data[, c(1:7, 13, 14, 12, 18, 19)]}
   p1 <- Heatmap(fea_plot[, c(1:4)], cluster_rows = FALSE, name = "Number of variants", row_names_side = "left", cluster_columns = FALSE, column_names_rot = 45, rect_gp = gpar(col = "black", lwd = 1.5), col = circlize::colorRamp2(unname(quantile(as.vector(t(fea_plot[, c(1:4)])), c(0.05, 0.25, 0.5, 0.75, 0.95))), c("white", "#CBCDE0", "#A4ABD6", "#ACA0D2", "#8076A3"), transparency = 0.2), column_dend_height = unit(2, "cm"), row_names_gp = gpar(fontsize = 10, col = "black"), column_names_gp = gpar(fontsize = 10, col = c(rep("#8076A3", 4))), cell_fun = function(j, i, x, y, width, height, fill) {
     grid.text(sprintf("%.0f", fea_plot[, c(1:4)][i, j]), x, y, gp = gpar(fontsize = 14))
   })
