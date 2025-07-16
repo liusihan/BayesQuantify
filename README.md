@@ -84,7 +84,7 @@ You can find a step-by-step example of how to use it below:
 > data<-discrete_cutoff(data, "Applied Evidence Codes (Met)", criteria = "PM2_Supporting")
 > data<-discrete_cutoff(data, "Applied Evidence Codes (Met)", criteria = "PM2")
 > library(dplyr)
-> truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
+> truth_set <- data %>% filter(VUS_class %in% c("IceCold","Cold","Cool","")) %>% filter(!grepl("BA1",`Applied Evidence Codes (Met)`)) 
 > LR_result<-LR(truth_set, 28, 29)
 
 # For quantitative variables: 
