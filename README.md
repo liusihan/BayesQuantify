@@ -21,12 +21,12 @@ and PP3/BP4. However, existing software and tools designed for quantifying
 the evidence strength and establishing corresponding thresholds to refine 
 the ACMG/AMP criteria are lacking.
 
-The `BayesQuantify` R Package provide users with a unified resource 
+The `BayesQuantify` R Package provides users with a unified resource 
 for quantifying the strength of evidence for ACMG/AMP criteria using a 
-naive Bayes classifier. The functions included in BayesQuantify consists 
-of six main steps (as shown in Figure 1):
+naive Bayes classifier. The functions included in BayesQuantify consist 
+of five main steps (as shown in Figure 1):
 
-![Figure 1](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1_BayesQuantify.jpeg?raw=true)
+![Figure 1](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1_BayesQuantify.png?raw=true)
 <p align="center"> Figure 1. Schematic overview of BayesQuantify. </p>
 
 ## Installation
@@ -53,10 +53,13 @@ Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019
 
 ## Usage
 The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/207dfa884c0ac84b8ed281ece95dee5e1b3a8fb6/man/figures/BayesQuantify.pdf).
+
+You can find a step-by-step example of how to use it below:
 ``` r
 > library(BayesQuantify)
 
-##step 1: Determining theoretical OP
+## Step 1: Calculation of OP and Post_P for each evidence strength with user-defined Prior_P.
+# Prior_P=0.1 was recommended by ClinGen SVI Working Group
 > auto_select_postp(0.1)
   Evidence Strength Odds of pathogenicity Posterior probability of pathogenicity and benignity
 1               PVS                   351                                                0.975
@@ -68,32 +71,53 @@ The full usage of BayesQuantify can be found [here](https://github.com/liusihan/
 7                BS    0.0533760512683624                                    0.994104293142569
 8               BVS   0.00284900284900285                                    0.999683544303797
 
-##step 2: Variants of US (VUS) subclassification
+## Step 2: Variants of US (VUS) subclassification
+# This step will categorize VUS into six confidence tiers (hot, warm, tepid, cool, cold, and ice cold) according to
+# the Association for Clinical Genomic Science (ACGS) Best Practice Guidelines.
 > data("ClinGen_dataset")
 > data <- add_info(ClinGen_dataset, "Assertion")
 > data <- VUS_classify(data, "Assertion", "Applied Evidence Codes (Met)")
-> all_evidence <- unlist(str_replace_all(data$`Applied Evidence Codes (Met)`," ", ""))
-> split_evidence <- strsplit(all_evidence, ",")
-> unique_evidence <- unique(unlist(split_evidence))
-> P_evidence<-grep("^P", unique_evidence, value = TRUE)
+
+## Step3: Calculating LR or lr
+# To ensure a robust and reliable truth set for evidence calibration, we recommend excluding hot, warm, tepid VUS.
+# For binary variables: 
+> data<-discrete_cutoff(data, "Applied Evidence Codes (Met)", criteria = "PM2_Supporting")
+> data<-discrete_cutoff(data, "Applied Evidence Codes (Met)", criteria = "PM2")
 > library(dplyr)
 > truth_set <- filter(data,VUS_class %in% c("IceCold","Cold","Cool",""))
-> for(i in P_evidence){
-   truth_set <- discrete_cutoff(truth_set, "Applied Evidence Codes (Met)", criteria = i)
- }
+> LR_result<-LR(truth_set, 28, 29)
 
-##step3: Calculating LR or lr
-> LR_result<-LR(truth_set, 28, 72)
-> rownames(LR_result)<-LR_result[,1]
-> LR_result<-LR_result[,-1]
-> name_evidence<-rownames(LR_result)
-> LR_result<-data.frame(lapply(LR_result,as.numeric))
-> rownames(LR_result)<-name_evidence
+# For quantitative variables: 
+> data("ClinVar_2019_dataset")
+> data <- add_info(ClinVar_2019_dataset, "clnsig")
+> local_bootstrapped_lr(data, "PrimateAI_score", "Pathogenic",0.0441, 10000, 100, 0.01, "test_dir")
+> postp_list <- c(0.100, 0.211, 0.608, 0.981)
+> lr_CI_result <- lr_CI(10000, "test_dir")
+> get_lr_threshold(lr_CI_result, postp_list, "Pathogenic")
 
-##step 4: Visualization
+## Step 4: Variant classification
+# BayesQuantify offers two functions for variant classification
+> data("ClinGen_dataset")
+> ACMG_Classification(ClinGen_dataset, "Applied Evidence Codes (Met)")
+> BCF(ClinGen_dataset, "Applied Evidence Codes (Met)", 0.1, 350)
+
+## Step 5: Visualization
+# Display variant characteristics
+> data("ClinGen_dataset")
+> ClinGen_dataset <- add_info(ClinGen_dataset, "Assertion")
+> ClinGen_dataset <- VUS_classify(ClinGen_dataset, "Assertion", "Applied Evidence Codes (Met)")
 > multi_plot(ClinGen_dataset, "Assertion", "HGNC Gene Symbol")
-> op_list <- c(2.08, 4.33, 18.70, 350)
-> heatmap_LR(LR_result, op_list)
+
+# For LR
+> data("LR_result")
+> op_list <- c(2.08, 4.33, 18.70, 351)
+> heatmap_LR(LR_result, "Pathogenic", op_list)
+
+# For lr
+> data("lr_CI_result")
+> postp_list <- c(0.100, 0.211, 0.608, 0.981)
+> plot_lr(lr_CI_result, "Pathogenic", postp_list)
+
 ```
 
 ## Citation
