@@ -26,7 +26,7 @@ for quantifying the strength of evidence for ACMG/AMP criteria using a
 naive Bayes classifier. The functions included in BayesQuantify consist 
 of five main steps (as shown in Figure 1):
 
-![Figure 1](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1_BayesQuantify.png?raw=true)
+![Figure 1](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1.png?raw=true)
 <p align="center"> Figure 1. Schematic overview of BayesQuantify. </p>
 
 ## Installation
@@ -52,7 +52,7 @@ Two distinct datasets: the ClinGen Curated Variants dataset and the ClinVar 2019
 
 
 ## Usage
-The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/207dfa884c0ac84b8ed281ece95dee5e1b3a8fb6/man/figures/BayesQuantify.pdf).
+The full usage of BayesQuantify can be found [here](https://github.com/liusihan/BayesQuantify/blob/79848f80b975984615efea4879d8aecaecb7115a/man/figures/BayesQuantify_1.0.0.pdf).
 
 You can find a step-by-step example of how to use it below:
 ``` r
@@ -120,10 +120,23 @@ You can find a step-by-step example of how to use it below:
 
 ```
 
+Furthermore, BayesQuantify could play a crucial role in addressing the issue of double-counting evidence. BayesQuantify has incorporated correlation checks to reduce this bias:
+``` r
+> library(BayesQuantify)
+> data("ClinGen_dataset")
+> evidence_corplot(ClinGen_dataset, "Applied Evidence Codes (Met)")
+> evaluation_variant(ClinGen_dataset, "Applied Evidence Codes (Met)")
+```
+The `evaluation_variant` function can automatically identify variants where high inter-evidence correlations suggest potential double-counting risk. 
+These variants are flagged for user re-evaluation. The `evidence_corplot` will generate a correlation plot like below:
+
+![Evidence correlation](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/evidence_corrplot.jpg?raw=true)
+
+
 ## Citation
 If you use BayesQuantify, please cite our paper (thanks!):
 > Sihan Liu, Xiaoshu Feng, Fengxiao Bu. Calibration and refinement of ACMG/AMP criteria for variant classification with BayesQuantify[J]. medRxiv 2024.09.08.24313284; doi: https://doi.org/10.1101/2024.09.08.24313284.
 
 
 ## Getting help
-If you encounter a clear bug, please file an issue with a minimal reproducible example on GitHub. For questions and other discussion, please contact Sihan Liu (liusihan@wchscu.cn).
+If you encounter a clear bug, please file an issue with a minimal reproducible example on GitHub. For questions and other discussions, please contact Sihan Liu (liusihan@wchscu.cn).
