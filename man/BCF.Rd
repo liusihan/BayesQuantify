@@ -4,7 +4,7 @@
 \alias{BCF}
 \title{Classifying variants into five distinct categories according to the Bayesian classification framework}
 \usage{
-BCF(data, evidence_col, prior_p, op_vs)
+BCF(data, evidence_col, prior_p, op_vs, public_p = NULL)
 }
 \arguments{
 \item{data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
@@ -14,6 +14,8 @@ BCF(data, evidence_col, prior_p, op_vs)
 \item{prior_p}{The prior probability of pathogenicity (proportion of P/LP variants in a set of variants)}
 
 \item{op_vs}{Odds of pathogenicity (OP) of "Very String"}
+
+\item{public_p}{DataFrame contains reported P/LP variants}
 }
 \value{
 A new DataFrame that incorporates the input data and the results of variant classification

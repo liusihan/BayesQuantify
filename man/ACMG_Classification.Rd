@@ -4,12 +4,14 @@
 \alias{ACMG_Classification}
 \title{Classifying variants into five distinct categories according to the 2015 ACMG/AMP guidelines}
 \usage{
-ACMG_Classification(data, evidence_col)
+ACMG_Classification(data, evidence_col, public_p = NULL)
 }
 \arguments{
 \item{data}{DataFrame comprising fundamental variant information, evidence labeling, and classification details}
 
 \item{evidence_col}{The column name for ACMG evidence(str)}
+
+\item{public_p}{DataFrame contains reported P/LP variants}
 }
 \value{
 A new DataFrame that incorporates the input data and the results of variant classification

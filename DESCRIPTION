@@ -23,7 +23,10 @@ Imports:
     stats,
     utils,
     circlize,
-    plyr
+    plyr,
+    Hmisc,
+    corrplot,
+    RColorBrewer
 Depends: 
     R (>= 4.1.0)
 LazyData: true
