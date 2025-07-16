@@ -60,7 +60,7 @@
 <p>The ACMG/AMP guidelines have undergone continuous review and refinement for different rules, genes, and diseases, driving optimization and enhancing variant interpretation standards in genetic testing. In 2018, the ClinGen Sequence Variant Interpretation Working Group has proposed a Bayesian Classification Framework to model the ACMG/AMP guidelines. This framework has successfully quantified the thresholds for applying PM5 and PP3/BP4. However, existing software and tools designed for quantifying the evidence strength and establishing corresponding thresholds to refine the ACMG/AMP criteria are lacking.</p>
 <p>The <code>BayesQuantify</code> R Package provides users with a unified resource for quantifying the strength of evidence for ACMG/AMP criteria using a naive Bayes classifier. The functions included in BayesQuantify consist of five main steps (as shown in Figure 1):</p>
 <div class="float">
-<img src="https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1_BayesQuantify.png?raw=true" alt="Figure 1"><div class="figcaption">Figure 1</div>
+<img src="https://github.com/liusihan/BayesQuantify/blob/master/man/figures/Figure1.png?raw=true" alt="Figure 1"><div class="figcaption">Figure 1</div>
 </div>
 <p align="center">
 Figure 1. Schematic overview of BayesQuantify.
@@ -135,7 +135,7 @@ Figure 1. Schematic overview of BayesQuantify.
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>The full usage of BayesQuantify can be found <a href="https://github.com/liusihan/BayesQuantify/blob/207dfa884c0ac84b8ed281ece95dee5e1b3a8fb6/man/figures/BayesQuantify.pdf" class="external-link">here</a>.</p>
+<p>The full usage of BayesQuantify can be found <a href="https://github.com/liusihan/BayesQuantify/blob/79848f80b975984615efea4879d8aecaecb7115a/man/figures/BayesQuantify_1.0.0.pdf" class="external-link">here</a>.</p>
 <p>You can find a step-by-step example of how to use it below:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(BayesQuantify)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
@@ -165,7 +165,7 @@ Figure 1. Schematic overview of BayesQuantify.
 <span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="sc">&gt;</span> data<span class="ot">&lt;-</span><span class="fu">discrete_cutoff</span>(data, <span class="st">"Applied Evidence Codes (Met)"</span>, <span class="at">criteria =</span> <span class="st">"PM2_Supporting"</span>)</span>
 <span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="sc">&gt;</span> data<span class="ot">&lt;-</span><span class="fu">discrete_cutoff</span>(data, <span class="st">"Applied Evidence Codes (Met)"</span>, <span class="at">criteria =</span> <span class="st">"PM2"</span>)</span>
 <span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(dplyr)</span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="sc">&gt;</span> truth_set <span class="ot">&lt;-</span> <span class="fu">filter</span>(data,VUS_class <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IceCold"</span>,<span class="st">"Cold"</span>,<span class="st">"Cool"</span>,<span class="st">""</span>))</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="sc">&gt;</span> truth_set <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(VUS_class <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IceCold"</span>,<span class="st">"Cold"</span>,<span class="st">"Cool"</span>,<span class="st">""</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"BA1"</span>,<span class="st">`</span><span class="at">Applied Evidence Codes (Met)</span><span class="st">`</span>)) </span>
 <span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="sc">&gt;</span> LR_result<span class="ot">&lt;-</span><span class="fu">LR</span>(truth_set, <span class="dv">28</span>, <span class="dv">29</span>)</span>
 <span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a></span>
 <span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co"># For quantitative variables: </span></span>
@@ -198,6 +198,15 @@ Figure 1. Schematic overview of BayesQuantify.
 <span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">data</span>(<span class="st">"lr_CI_result"</span>)</span>
 <span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="sc">&gt;</span> postp_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.100</span>, <span class="fl">0.211</span>, <span class="fl">0.608</span>, <span class="fl">0.981</span>)</span>
 <span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plot_lr</span>(lr_CI_result, <span class="st">"Pathogenic"</span>, postp_list)</span></code></pre></div>
+<p>Furthermore, BayesQuantify could play a crucial role in addressing the issue of double-counting evidence. BayesQuantify has incorporated correlation checks to reduce this bias:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(BayesQuantify)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">data</span>(<span class="st">"ClinGen_dataset"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">evidence_corplot</span>(ClinGen_dataset, <span class="st">"Applied Evidence Codes (Met)"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">evaluation_variant</span>(ClinGen_dataset, <span class="st">"Applied Evidence Codes (Met)"</span>)</span></code></pre></div>
+<p>The <code>evaluation_variant</code> function can automatically identify variants where high inter-evidence correlations suggest potential double-counting risk. These variants are flagged for user re-evaluation. The <code>evidence_corplot</code> will generate a correlation plot like below:</p>
+<div class="float">
+<img src="https://github.com/liusihan/BayesQuantify/blob/master/man/figures/evidence_corrplot.jpg?raw=true" alt="Evidence correlation"><div class="figcaption">Evidence correlation</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
@@ -207,7 +216,7 @@ Figure 1. Schematic overview of BayesQuantify.
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
-<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on GitHub. For questions and other discussion, please contact Sihan Liu (<a href="mailto:liusihan@wchscu.cn" class="email">liusihan@wchscu.cn</a>).</p>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on GitHub. For questions and other discussions, please contact Sihan Liu (<a href="mailto:liusihan@wchscu.cn" class="email">liusihan@wchscu.cn</a>).</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
