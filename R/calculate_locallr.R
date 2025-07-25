@@ -220,13 +220,41 @@ get_lr_threshold <- function(data, postp_list, direction) {
         }
       }
     }
-    if(!is.na(thresh[1]))
-    {
-      if(thresh[1]==min(data$test_cutoff)){thresh[1] <- NA}
+    if(direction=="Pathogenic"){
+        if(!is.na(thresh[1]))
+        {
+          if(thresh[1]==min(data$test_cutoff)){thresh[1] <- NA}
+        }
+        if(!is.na(thresh[2]))
+        {
+          if(thresh[2]==max(data$test_cutoff)){thresh[2] <- NA}
+        }
+        if(!is.na(thresh[3]))
+        {
+          if(thresh[3]==max(data$test_cutoff)){thresh[3] <- NA}
+        }
+        if(!is.na(thresh[4]))
+        {
+          if(thresh[4]==max(data$test_cutoff)){thresh[4] <- NA}
+        }
     }
-    if(!is.na(thresh[4]))
-    {
-      if(thresh[4]==max(data$test_cutoff)){thresh[4] <- NA}
+    if(direction=="Benign"){
+        if(!is.na(thresh[1]))
+        {
+          if(thresh[1]==max(data$test_cutoff)){thresh[1] <- NA}
+        }
+        if(!is.na(thresh[2]))
+        {
+          if(thresh[2]==min(data$test_cutoff)){thresh[2] <- NA}
+        }
+        if(!is.na(thresh[3]))
+        {
+          if(thresh[3]==min(data$test_cutoff)){thresh[3] <- NA}
+        }
+        if(!is.na(thresh[4]))
+        {
+          if(thresh[4]==min(data$test_cutoff)){thresh[4] <- NA}
+        }
     }
     return(thresh)
   }
