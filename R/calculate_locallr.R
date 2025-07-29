@@ -195,13 +195,15 @@ get_lr_threshold <- function(data, postp_list, direction) {
     return(message("Error: The input data does not exist!"))
   } else {
     data<-na.omit(data)
+    data <-data[-1, ]
+    data <-data[-nrow(data), ]
     for (j in c(1:length(postp_list))) {
-      valid_thrs <- data$test_cutoff[data$Posterior1 > postp_list[j]]
+      valid_thrs <- data$test_cutoff[data$Posterior1 >= postp_list[j]]
       thresh[j] <- NA
       while (length(valid_thrs) > 0) {
         if(direction=="Pathogenic"){
           candidate_min_thrs <- min(valid_thrs)
-          if (all(data$Posterior1[data$test_cutoff >= candidate_min_thrs] > postp_list[j])) {
+          if (all(data$Posterior1[data$test_cutoff >= candidate_min_thrs] >= postp_list[j])) {
             thresh[j] <- candidate_min_thrs
             break
           } else{
@@ -210,7 +212,7 @@ get_lr_threshold <- function(data, postp_list, direction) {
         }
         else if(direction=="Benign"){
           candidate_max_thrs <- max(valid_thrs)
-          if (all(data$Posterior1[data$test_cutoff <= candidate_max_thrs] > postp_list[j])) {
+          if (all(data$Posterior1[data$test_cutoff <= candidate_max_thrs] >= postp_list[j])) {
             thresh[j] <- candidate_max_thrs
             if(candidate_max_thrs==0){thresh[j] <- NA}
             break
