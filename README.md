@@ -135,7 +135,7 @@ These variants are flagged for user re-evaluation. The `evidence_corplot` will g
 
 ## Citation
 If you use BayesQuantify, please cite our paper (thanks!):
-> Liu S, Feng X, Wu Y, et alCalibration and refinement of ACMG/AMP criteria for variant classification with BayesQuantifyJournal of Medical Genetics Published Online First: 19 September 2025. doi: 10.1136/jmg-2025-110863.
+> Liu S, Feng X, Wu Y, et al. Calibration and refinement of ACMG/AMP criteria for variant classification with BayesQuantify. Journal of Medical Genetics Published Online First: 19 September 2025. doi: 10.1136/jmg-2025-110863.
 
 
 ## Getting help
