@@ -130,7 +130,7 @@ Furthermore, BayesQuantify could play a crucial role in addressing the issue of 
 The `evaluation_variant` function can automatically identify variants where high inter-evidence correlations suggest potential double-counting risk. 
 These variants are flagged for user re-evaluation. The `evidence_corplot` will generate a correlation plot like below:
 
-![Evidence correlation](https://github.com/liusihan/BayesQuantify/blob/master/man/figures/evidence_corrplot.jpg?raw=true)
+![Evidence correlation](https://github.com/liusihan/BayesQuantify/blob/976d12ed14d531e2c2ab76c5c78591cde3cc1070/man/figures/evidence_cor.jpg)
 
 
 ## Citation
