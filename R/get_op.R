@@ -266,7 +266,7 @@ evaluation_variant <- function(data, evidence_col, r_threshold = 0.6) {
   }
   for (i in 1:length(B_evidence))
   {
-    data_temp <- mutate(data_temp, test = ifelse(str_detect(data_temp[, evidence_num], B_evidence[i]) & (!grepl(paste(B_evidence[i], "", sep = "_"), data_temp[, evidence_num])), ifelse(grepl("BS", P_evidence[i]), -4, ifelse(grepl("BP", P_evidence[i]), -1, 0)), ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_VeryStrong", sep = "")), -8, ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_Strong", sep = "")), -4, ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_Moderate", sep = "")), -2, ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_Supporting", sep = "")), -1, 0)))))) %>% plyr::rename(c("test" = B_evidence[i]))
+    data_temp <- mutate(data_temp, test = ifelse(str_detect(data_temp[, evidence_num], B_evidence[i]) & (!grepl(paste(B_evidence[i], "", sep = "_"), data_temp[, evidence_num])), ifelse(grepl("BS", P_evidence[i]), 4, ifelse(grepl("BP", P_evidence[i]), 1, 0)), ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_VeryStrong", sep = "")), 8, ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_Strong", sep = "")), 4, ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_Moderate", sep = "")), 2, ifelse(str_detect(data_temp[, evidence_num], paste(B_evidence[i], "_Supporting", sep = "")), 1, 0)))))) %>% plyr::rename(c("test" = B_evidence[i]))
   }
   Evidence <- data_temp[, (ncol(data_temp) - 26):ncol(data_temp)]
   Evidence <- Evidence[, which(colSums(Evidence) != 0)]
